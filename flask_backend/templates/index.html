@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head><title>Philly Crime Dashboard</title></head>
+<body>
+  <h1>Philly Crime Dashboard</h1>
+  <button onclick="loadData()">Show Crimes</button>
+  <pre id="output"></pre>
+
+  <script>
+  async function loadData() {
+    const res = await fetch('/api/crime');
+    const data = await res.json();
+    document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+  }
+  </script>
+</body>
+</html>
