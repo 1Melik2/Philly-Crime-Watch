@@ -1,1 +1,0 @@
-Hello my name is Shaun Kim I transferred to Drexel this Fall with a associates in Computer Science. I switched my major to Information Systems for my bachelors. I have previous coding experience with Java, Linux, and Assembly. I am excited to work on this project with my group to create a Crime Dashboard.
