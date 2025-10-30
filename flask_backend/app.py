@@ -25,5 +25,6 @@ def crime_data():
     crimes = data.get('rows', [])
     return jsonify(crimes)
 
+
 if __name__ == "__main__":
     app.run(debug=True)
