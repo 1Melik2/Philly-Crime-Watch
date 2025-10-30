@@ -1,17 +1,16 @@
 <!DOCTYPE html>
-<html>
-<head><title>Philly Crime Dashboard</title></head>
-<body>
-  <h1>Philly Crime Dashboard</h1>
-  <button onclick="loadData()">Show Crimes</button>
-  <pre id="output"></pre>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Philadelphia Crime Dashboard</title>
+	</head>
+	<body>
+		<h1>Philadelphia Crime Dashboard</h1>
 
-  <script>
-  async function loadData() {
-    const res = await fetch('/api/crime');
-    const data = await res.json();
-    document.getElementById('output').textContent = JSON.stringify(data, null, 2);
-  }
-  </script>
-</body>
+		<canvas id="crimeChart" width="400" height="200"></canvas>
+		<ul id="crime-list"></ul>
+
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+		<script src="{{ url_for('static', filename='script.js') }}"></script>
+	</body>
 </html>
