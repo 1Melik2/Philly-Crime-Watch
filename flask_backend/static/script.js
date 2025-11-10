@@ -4,7 +4,7 @@ async function loadCrimeData(days = 1) {
 	const response = await fetch(`/api/crime?days=${days}`);
 	const data = await response.json();
 
-	// Show data in a list
+	// Show data in a list - temp
 	const list = document.getElementById('crime-list');
 	list.innerHTML = '';
 	data.forEach((crime) => {
@@ -15,10 +15,6 @@ async function loadCrimeData(days = 1) {
 
 	const labels = data.map((crime) => crime.text_general_code);
 	const counts = data.map((crime) => crime.count);
-
-	// make making a chart into function
-	// call it whenever the days get switched
-	// remove the things in the chart area using innerhtml
 
 	// Create chart
 	if (!crimeChart) {
@@ -48,7 +44,7 @@ async function loadCrimeData(days = 1) {
 		crimeChart.data.labels = labels;
 		crimeChart.data.datasets[0].data = counts;
 		crimeChart.data.datasets[0].label = `Top Crimes (Past ${days} Days)`;
-		crimeChart.update(); // re-render with new data
+		crimeChart.update();
 	}
 }
 
@@ -56,7 +52,7 @@ async function loadCrimeData(days = 1) {
 document.addEventListener('DOMContentLoaded', () => {
 	loadCrimeData(1);
 
-	// Add event listener for dropdown
+	// Add event listener for options
 	const timeRange = document.getElementById('timeRange');
 	timeRange.addEventListener('change', async (e) => {
 		const days = e.target.value;
