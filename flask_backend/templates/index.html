@@ -2,15 +2,32 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Philadelphia Crime Dashboard</title>
 	</head>
+
 	<body>
 		<h1>Philadelphia Crime Dashboard</h1>
 
-		<canvas id="crimeChart" width="400" height="200"></canvas>
-		<ul id="crime-list"></ul>
+		<div>
+			<label for="timeRange"><strong>Show data from:</strong></label>
+			<select id="timeRange">
+				<option value="1">Past 1 Day</option>
+				<option value="7">Past 7 Days</option>
+				<option value="30">Past 30 Days</option>
+			</select>
+		</div>
 
+		<canvas id="crimeChart" width="400" height="200"></canvas>
+
+		<h3>Crime List</h3>
+		<ul id="crime-list">
+			<li>Loading data...</li>
+		</ul>
+
+		<!-- Chart.js -->
 		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+		<!-- Your JS -->
 		<script src="{{ url_for('static', filename='script.js') }}"></script>
 	</body>
 </html>
