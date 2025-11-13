@@ -10,8 +10,17 @@
 </head>
 <body class="is-preload">
 
-  <div id="wrapper">
-    
+  <div id="wrapper" >
+	    <!-- Hero / Intro -->
+    <div id="intro" style="background-image:url('images/philly3.jpg'); background-size:cover; background-position:center;">
+      <div class="overlay" style="background:rgba(0,0,0,0.5); padding:2em; text-align:center;"">
+        <h1>Interactive Crime Map</h1>
+          <p>Accurate crime data—accessible to anyone, anywhere.</p>
+        <ul class="actions" style="display:inline-block; margin-top:1.5em;">
+          <li><a href="#header" class="button icon solid solo fa-arrow-down scrolly">Explore</a></li>
+        </ul>
+      </div>
+    </div>
 
     <!-- Header -->
     <header id="header">
@@ -26,7 +35,14 @@
         <li><a href="data.html">Statistics</a></li>
         <li><a href="reports.html">Reports</a></li>
         <li><a href="about.html">About Us</a></li>
+        <li><a href="contact.html">Contact</a></li>
       </ul>
+      <ul class="icons">
+      <li>
+          <a href="https://gitlab.com/yourusername/phillycrimewatch" class="icon brands fa-gitlab">
+            <span class="label">GitLab</span>
+          </a>
+        </li>
     </nav>
 
     <!-- Main -->
@@ -63,5 +79,14 @@
       .bindPopup('Example crime incident in Center City')
       .openPopup();
   </script>
+
+    <!-- Scripts -->
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/jquery.scrollex.min.js"></script>
+  <script src="assets/js/jquery.scrolly.min.js"></script>
+  <script src="assets/js/browser.min.js"></script>
+  <script src="assets/js/breakpoints.min.js"></script>
+  <script src="assets/js/util.js"></script>
+  <script src="assets/js/main.js"></script>
 </body>
 </html>
