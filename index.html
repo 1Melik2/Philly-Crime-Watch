@@ -5,7 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Philly Crime Watch</title>
   <link rel="stylesheet" href="style.css">
+
+ <!-- Leaflet CSS -->
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet/dist/leaflet.css"
+  integrity="sha512-xwE/ZXtF3jDg1xI1D6a5zO+R1zH4D8R1yjF8r7D3u6u1D5Jq3U7C1c3j8C3J9E0T7mRjX7E5Y3Y5E5Y3v9y2g=="
+  crossorigin=""
+/>
+
 </head>
+
 <body>
   <!-- ===== HEADER ===== -->
   <header>
@@ -30,7 +40,7 @@
     <section id="map">
       <h2>Interactive Crime Map</h2>
       <div id="map-container">
-        <img src="crime-map.png" alt="Philadelphia crime map" class="map-image">
+        <div id="mapid"></div>
       </div>
     </section>
 
@@ -38,9 +48,7 @@
     <section id="stats">
       <h2>Crime Statistics</h2>
       <p>Explore trends in Philadelphia crime by type, year, and neighborhood.</p>
-      <div class="chart-grid">
-        <!-- Placeholder for charts or graphs -->
-      </div>
+      <div class="chart-grid"></div>
     </section>
 
     <!-- Recent Crime Reports -->
@@ -79,6 +87,13 @@
   </footer>
 
   <!-- ===== SCRIPTS ===== -->
+  <!-- Leaflet JS -->
+  <script
+    src="https://unpkg.com/leaflet/dist/leaflet.js"
+    integrity="sha512-QVb5t1Q5yZqK1+HqO/JCePSmK2xXGvSmR/1UavP6pvhsmA0Qv7PUj2Xb7Xx7J2X5zA3F4dW/JrCwQkPq5vHFdw=="
+    crossorigin=""
+  ></script>
+
   <script src="script.js"></script>
 </body>
 </html>
