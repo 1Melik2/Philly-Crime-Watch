@@ -3234,7 +3234,7 @@ input, select, textarea {
 			width: 100%;
 			height: 100%;
 			background-color: #212931;
-			background-image: url("../../images/overlay.png"), linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url("../../images/bg.jpg");
+			background-image: url("../../images/philly1.jpg"), linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url("../../images/philly3.jpg");
 			background-size: auto,								auto,														100% auto;
 			background-position: center,								center,														top center;
 			background-repeat: repeat,								no-repeat,													no-repeat;
@@ -3250,9 +3250,9 @@ input, select, textarea {
 
 		#wrapper.fade-in:before {
 			pointer-events: none;
-			-moz-transition: opacity 1s ease-in-out;
-			-webkit-transition: opacity 1s ease-in-out;
-			-ms-transition: opacity 1s ease-in-out;
+			-moz-transition: opacity 5s ease-in-out;
+			-webkit-transition: opacity 0.1s ease-in-out;
+			-ms-transition: opacity 0.1s ease-in-out;
 			transition: opacity 1s ease-in-out;
 			-moz-transition-delay: 0.75s;
 			-webkit-transition-delay: 0.75s;
