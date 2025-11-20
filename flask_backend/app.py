@@ -5,16 +5,15 @@ import requests
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/')
+@app.route("/")
 def home():
-    return render_template('index.html')
+    return render_template("index.html")
 
+# CRIME STATISTICS (for your chart)
 @app.route('/api/crime')
 def crime_data():
-    # get "days" query parameter from the frontend (default: 1)
     days = request.args.get('days', default=1, type=int)
-
-    # dynamically insert the days into the SQL query
+    
     url = (
         "https://phl.carto.com/api/v2/sql?"
         f"q=SELECT text_general_code, COUNT(*) as count "
@@ -24,19 +23,43 @@ def crime_data():
         f"ORDER BY count DESC "
         f"LIMIT 10"
     )
-
+    
     response = requests.get(url)
-
+    
     if response.status_code != 200:
         return jsonify({'error': 'Failed to fetch data'}), 500
-
+    
     data = response.json()
-    crimes = data.get('rows', [])
-    return jsonify(crimes)
+    return jsonify(data.get('rows', []))
 
+# CRIME LOCATIONS (for your map)
+@app.route('/api/crime_locations')
+def crime_locations():
+    days = request.args.get('days', default=1, type=int)
+    
+    url = (
+        "https://phl.carto.com/api/v2/sql?"
+        f"q=SELECT "
+        f" text_general_code, "
+        f" point_x as lon, "
+        f" point_y as lat, "
+        f" dispatch_date_time "
+        f"FROM incidents_part1_part2 "
+        f"WHERE dispatch_date_time >= NOW() - INTERVAL '{days} days' "
+        f"LIMIT 500"
+    )
+    
+    response = requests.get(url)
+    
+    if response.status_code != 200:
+        return jsonify({"error": "Failed to fetch data"}), 500
+    
+    data = response.json()
+    return jsonify(data.get("rows", []))
+
+# LATEST CRIME
 @app.route('/api/latest')
 def latest_crime():
-    # Get the most recent incident that actually has data (not null)
     url = (
         "https://phl.carto.com/api/v2/sql?"
         "q=SELECT text_general_code, dispatch_date_time, location_block "
@@ -48,10 +71,10 @@ def latest_crime():
     )
     
     response = requests.get(url)
-
+    
     if response.status_code != 200:
         return jsonify({'error': 'Failed to fetch latest crime'}), 500
-
+    
     data = response.json()
     rows = data.get('rows', [])
     
@@ -64,10 +87,10 @@ def latest_crime():
         })
     else:
         return jsonify({'error': 'No data found'}), 404
-    
+
+# NEIGHBORHOODS Tracked
 @app.route('/api/neighborhoods')
 def neighborhood_count():
-    # Get count of distinct neighborhoods (PSA = Police Service Area)
     url = (
         "https://phl.carto.com/api/v2/sql?"
         "q=SELECT COUNT(DISTINCT psa) as neighborhood_count "
@@ -76,10 +99,10 @@ def neighborhood_count():
     )
     
     response = requests.get(url)
-
+    
     if response.status_code != 200:
         return jsonify({'error': 'Failed to fetch neighborhood count'}), 500
-
+    
     data = response.json()
     rows = data.get('rows', [])
     
@@ -89,5 +112,6 @@ def neighborhood_count():
         })
     else:
         return jsonify({'error': 'No data found'}), 404
+
 if __name__ == "__main__":
     app.run(debug=True)
