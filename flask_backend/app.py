@@ -32,7 +32,7 @@ def crime_data():
     data = response.json()
     return jsonify(data.get('rows', []))
 
-# CRIME LOCATIONS (for your map)
+# CRIME LOCATIONS (for map)
 @app.route('/api/crime_locations')
 def crime_locations():
     days = request.args.get('days', default=1, type=int)
