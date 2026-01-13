@@ -7,8 +7,7 @@
 
 		<script src="http://vizw.it/scripts/vizwit-embed.js"></script>
 		<link rel="stylesheet" href="{{ url_for('static', filename='data_style.css') }}">
-		
-	
+
 	</head>
 
 	<body>
@@ -32,6 +31,26 @@
 
 		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 		<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+		
+		<div style="min-height: 230px">
+		<script class="vizwit" type="application/json">
+		{
+		"title": "Location (block)",
+		"description": "Location of incidents generalized by street block",
+		"chartType": "bar",
+		"provider": "carto",
+		"domain": "phl.carto.com",
+		"dataset": "incidents_part1_part2",
+		"groupBy": "location_block",
+		"triggerField": "location_block",
+		"baseFilters": [],
+		"filters": {},
+		"aggregateFunction": "count"
+		}
+		</script>
+		</div>
+	
 
 
 
