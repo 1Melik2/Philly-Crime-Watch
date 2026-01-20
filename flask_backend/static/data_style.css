@@ -262,6 +262,221 @@ canvas {
     opacity: 1;
 }
 
+/* Map Container */
+.map-container {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    margin-top: 15px;
+    background: white;
+    border-radius: 4px;
+    padding: 0;
+    border: 2px solid #e2e8f0 !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+}
+
+#police-district-map {
+    width: 100%;
+    height: 600px;
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    display: block;
+}
+
+/* Ensure map elements are contained */
+.map-container .leaflet-container,
+.map-container .leaflet-map-pane,
+.map-container .leaflet-tile-pane,
+.map-container .leaflet-overlay-pane,
+.map-container .leaflet-shadow-pane,
+.map-container .leaflet-marker-pane,
+.map-container .leaflet-tooltip-pane,
+.map-container .leaflet-popup-pane {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.map-container svg,
+.map-container canvas {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Fix for VizWit choropleth maps */
+.map-container .vizwit {
+    width: 100% !important;
+    height: 100% !important;
+    position: relative !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+}
+
+.map-container .vizwit > div,
+.map-container .vizwit > section,
+.map-container [class*="vizwit"] {
+    width: 100% !important;
+    height: 100% !important;
+    position: relative !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* Prevent map tiles from spreading */
+.map-container .leaflet-tile-container {
+    position: absolute !important;
+}
+
+.map-container .leaflet-tile {
+    position: absolute !important;
+}
+
+/* Force all child elements to be contained */
+.map-container * {
+    box-sizing: border-box;
+}
+
+/* Ensure no floating or absolute positioning issues */
+.map-container img,
+.map-container .leaflet-tile {
+    max-width: none !important;
+}
+
+/* Style choropleth map paths (police districts) */
+.map-container svg path,
+.map-container .leaflet-overlay-pane svg path {
+    stroke: #ffffff !important;
+    stroke-width: 2px !important;
+    stroke-opacity: 1 !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2)) !important;
+}
+
+/* Hover effect on districts */
+.map-container svg path:hover,
+.map-container .leaflet-overlay-pane svg path:hover {
+    stroke: #ff6b35 !important;
+    stroke-width: 3px !important;
+    stroke-opacity: 1 !important;
+    filter: drop-shadow(0 3px 6px rgba(0,0,0,0.4)) !important;
+    transform: scale(1.01) !important;
+    transform-origin: center !important;
+    z-index: 1000 !important;
+}
+
+/* Active/selected district */
+.map-container svg path[class*="selected"],
+.map-container svg path[class*="active"],
+.map-container .leaflet-overlay-pane svg path[class*="selected"],
+.map-container .leaflet-overlay-pane svg path[class*="active"] {
+    stroke: #ff6b35 !important;
+    stroke-width: 3px !important;
+    filter: drop-shadow(0 3px 8px rgba(255,107,53,0.5)) !important;
+}
+
+/* Improve fill colors - make them more vibrant */
+.map-container svg path {
+    fill-opacity: 0.8 !important;
+}
+
+.map-container svg path:hover {
+    fill-opacity: 0.9 !important;
+}
+
+/* Style tooltips/popups on the map */
+.map-container .leaflet-tooltip {
+    background-color: rgba(0, 0, 0, 0.85) !important;
+    color: white !important;
+    border: 2px solid #ff6b35 !important;
+    border-radius: 6px !important;
+    padding: 8px 12px !important;
+    font-weight: bold !important;
+    font-size: 13px !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3) !important;
+}
+
+.map-container .leaflet-tooltip-top:before {
+    border-top-color: #ff6b35 !important;
+}
+
+.map-container .leaflet-tooltip-bottom:before {
+    border-bottom-color: #ff6b35 !important;
+}
+
+.map-container .leaflet-tooltip-left:before {
+    border-left-color: #ff6b35 !important;
+}
+
+.map-container .leaflet-tooltip-right:before {
+    border-right-color: #ff6b35 !important;
+}
+
+/* Style popups */
+.map-container .leaflet-popup-content-wrapper {
+    background-color: rgba(255, 255, 255, 0.98) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+    border: 2px solid #ff6b35 !important;
+}
+
+.map-container .leaflet-popup-content {
+    margin: 12px 16px !important;
+    color: #333 !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+}
+
+.map-container .leaflet-popup-tip {
+    background: white !important;
+    border: 1px solid #ff6b35 !important;
+}
+
+/* Style map controls */
+.map-container .leaflet-control-zoom a {
+    background-color: white !important;
+    color: #333 !important;
+    border: 2px solid #ddd !important;
+    font-weight: bold !important;
+    transition: all 0.2s ease !important;
+}
+
+.map-container .leaflet-control-zoom a:hover {
+    background-color: #ff6b35 !important;
+    color: white !important;
+    border-color: #ff6b35 !important;
+    transform: scale(1.1) !important;
+}
+
+/* Style legend if present */
+.map-container .leaflet-legend,
+.map-container .info.legend {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    border: 2px solid #ddd !important;
+    border-radius: 6px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2) !important;
+    padding: 12px !important;
+}
+
+/* Improve attribution styling */
+.map-container .leaflet-control-attribution {
+    background-color: rgba(255, 255, 255, 0.8) !important;
+    padding: 4px 8px !important;
+    border-radius: 4px !important;
+    font-size: 11px !important;
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
     body {
@@ -288,5 +503,9 @@ canvas {
     
     .vizwit-container .dataTables_filter {
         margin-left: 0;
+    }
+    
+    #police-district-map {
+        height: 400px;
     }
 }
