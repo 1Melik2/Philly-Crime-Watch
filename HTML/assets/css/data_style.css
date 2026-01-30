@@ -1,0 +1,412 @@
+/* Basic Reset and Body */
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    margin: 0;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Headings */
+h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h2 {
+    color: #444;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+h3 {
+    color: #555;
+    margin-top: 20px;
+}
+
+/* Dropdown Filter */
+div label {
+    margin-right: 10px;
+}
+
+select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+/* Canvas Chart */
+canvas {
+    margin: 20px 0;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+/* Crime List */
+#crime-list {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+#crime-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+/* Card Sections */
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Table Container */
+.vizwit-container {
+    overflow-x: auto;
+    margin-top: 15px;
+}
+
+/* Table Styling */
+.vizwit-container table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    font-size: 14px;
+}
+
+/* Table Headers */
+.vizwit-container table thead th {
+    background: #4a5568;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    font-weight: normal;
+    border-bottom: 2px solid #2d3748;
+}
+
+/* Table Cells */
+.vizwit-container table tbody td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+/* Alternating Rows */
+.vizwit-container table tbody tr:nth-child(even) {
+    background: #f7fafc;
+}
+
+/* Hover Effect */
+.vizwit-container table tbody tr:hover {
+    background: #edf2f7;
+}
+
+/* Hide VizWit Title and Controls - Comprehensive */
+.vizwit-container h3,
+.vizwit-container .vizwit-title,
+.vizwit-container h2,
+.vizwit-container h1,
+.vizwit > h3,
+.vizwit > h2,
+.vizwit-header,
+.vizwit-controls-top {
+    display: none !important;
+}
+
+/* Hide Embed and Export buttons - All variations */
+.vizwit-container .vizwit-embed-button,
+.vizwit-container .vizwit-export-button,
+.vizwit-container a[href*="embed"],
+.vizwit-container a[href*="export"],
+.vizwit-container button:contains("Embed"),
+.vizwit-container button:contains("Export"),
+.vizwit-container ul li a,
+.vizwit-container ul,
+.vizwit > ul,
+.vizwit-menu,
+/* Hide from all VizWit elements, not just containers */
+.vizwit-embed-button,
+.vizwit-export-button,
+a[href*="embed"],
+a[href*="export"],
+button[class*="embed"],
+button[class*="export"],
+a[class*="embed"],
+a[class*="export"],
+/* Hide dropdown menus with embed/export */
+.vizwit-menu,
+.vizwit-dropdown,
+.vizwit-actions,
+/* Hide from map container too */
+.map-container .vizwit-embed-button,
+.map-container .vizwit-export-button,
+.map-container a[href*="embed"],
+.map-container a[href*="export"],
+.map-container ul,
+.map-container .vizwit-menu,
+/* General VizWit menu/action items */
+[class*="vizwit"][class*="menu"],
+[class*="vizwit"][class*="action"],
+[class*="vizwit"][class*="embed"],
+[class*="vizwit"][class*="export"] {
+    display: none !important;
+}
+
+/* VizWit Controls Container */
+.vizwit-container .vizwit-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Show Entries - Top Left */
+.vizwit-container .dataTables_length {
+    order: 1;
+}
+
+/* Search Box - Top Right */
+.vizwit-container .dataTables_filter {
+    order: 2;
+    margin-left: auto;
+}
+
+.vizwit-container .dataTables_filter input {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-left: 8px;
+}
+
+/* Pagination - Bottom Right */
+.vizwit-container .dataTables_info {
+    float: left;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #e2e8f0;
+    color: #4a5568;
+    font-size: 14px;
+}
+
+.vizwit-container .dataTables_paginate {
+    float: right;
+    text-align: right;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #e2e8f0;
+}
+
+/* Clear floats after pagination area */
+.vizwit-container .dataTables_wrapper:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Custom total count styling */
+.total-count {
+    text-align: center;
+    margin-top: 15px;
+    padding: 12px;
+    background: #f7fafc;
+    border-radius: 4px;
+    color: #4a5568;
+    font-weight: bold;
+    border-top: 2px solid #e2e8f0;
+}
+
+.total-count span {
+    color: #2d3748;
+    font-size: 16px;
+}
+
+.vizwit-container .dataTables_paginate .paginate_button {
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 0 2px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+    color: #4a5568;
+    text-decoration: none;
+}
+
+.vizwit-container .dataTables_paginate .paginate_button:hover {
+    background: #edf2f7;
+    border-color: #cbd5e0;
+}
+
+.vizwit-container .dataTables_paginate .paginate_button.current {
+    background: #4a5568;
+    color: white;
+    border-color: #4a5568;
+}
+
+.vizwit-container .dataTables_paginate .paginate_button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Sortable Column Headers */
+.vizwit-container table thead th {
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+    padding-right: 25px;
+}
+
+.vizwit-container table thead th:after {
+    content: "⇅";
+    position: absolute;
+    right: 8px;
+    opacity: 0.3;
+    font-size: 14px;
+}
+
+.vizwit-container table thead th:hover:after {
+    opacity: 0.6;
+}
+
+.vizwit-container table thead th.sorting_asc:after {
+    content: "↑";
+    opacity: 1;
+}
+
+.vizwit-container table thead th.sorting_desc:after {
+    content: "↓";
+    opacity: 1;
+}
+
+/* Map Container */
+.map-container {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    margin-top: 15px;
+    background: white;
+    border-radius: 4px;
+    padding: 0;
+    border: 2px solid #e2e8f0 !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+}
+
+#police-district-map {
+    width: 100%;
+    height: 600px;
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    display: block;
+}
+
+/* Ensure map elements are contained */
+.map-container .leaflet-container,
+.map-container .leaflet-map-pane,
+.map-container .leaflet-tile-pane,
+.map-container .leaflet-overlay-pane,
+.map-container .leaflet-shadow-pane,
+.map-container .leaflet-marker-pane,
+.map-container .leaflet-tooltip-pane,
+.map-container .leaflet-popup-pane {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.map-container svg,
+.map-container canvas {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Fix for VizWit choropleth maps */
+.map-container .vizwit {
+    width: 100% !important;
+    height: 100% !important;
+    position: relative !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+}
+
+.map-container .vizwit > div,
+.map-container .vizwit > section,
+.map-container [class*="vizwit"] {
+    width: 100% !important;
+    height: 100% !important;
+    position: relative !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* Prevent map tiles from spreading */
+.map-container .leaflet-tile-container {
+    position: absolute !important;
+}
+
+.map-container .leaflet-tile {
+    position: absolute !important;
+}
+
+/* Force all child elements to be contained */
+.map-container * {
+    box-sizing: border-box;
+}
+
+/* Ensure no floating or absolute positioning issues */
+.map-container img,
+.map-container .leaflet-tile {
+    max-width: none !important;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    .card {
+        padding: 15px;
+    }
+    
+    .vizwit-container table {
+        font-size: 12px;
+    }
+    
+    .vizwit-container table th,
+    .vizwit-container table td {
+        padding: 8px;
+    }
+    
+    .vizwit-container .vizwit-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .vizwit-container .dataTables_filter {
+        margin-left: 0;
+    }
+    
+    #police-district-map {
+        height: 400px;
+    }
+}
