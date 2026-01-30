@@ -1,6 +1,31 @@
 let crimeMarkers = [];
+let heatPoints = [];
+let heatLayer = null;
+let crimes;
 
-async function loadCrimeMarkers(days = 3) {
+const crimeSeverity = new Map([
+	['Thefts', 0.3],
+	['Theft from Vehicle', 0.4],
+	['Motor Vehicle Theft', 0.5],
+	['DRIVING UNDER THE INFLUENCE', 0.6],
+	['Robbery No Firearm', 0.5],
+	['Robbery Firearm', 0.8],
+	['Burglary Non-Residential', 0.3],
+	['Burglary Residential', 0.4],
+	['Rape', 1.0],
+	['Aggravated Assault No Firearm', 0.9],
+	['Aggravated Assault Firearm', 0.8],
+	['Other Assaults', 0.7],
+	['Arson', 0.7],
+	['Other Sex Offenses (Not Commercialized)', 0.8],
+	['All Other Offenses', 0.3],
+	['Homicide - Criminal', 1.0],
+	['Homicide - Gross Negligence', 0.9],
+	['Homicide - Justifiable', 0.8],
+]);
+
+//Fetch data from python
+async function loadCrimeData(days = 30) {
 	try {
 		console.log(`Fetching crime data for last ${days} day(s)...`);
 		const response = await fetch(
@@ -12,75 +37,87 @@ async function loadCrimeMarkers(days = 3) {
 			return;
 		}
 
-		const crimes = await response.json();
-
-		// Log the raw response
+		crimes = await response.json();
 		console.log('Raw API Response:', crimes);
-		console.log(`Total crimes received: ${crimes.length}`);
-
-		// Remove existing markers
-		crimeMarkers.forEach((marker) => map.removeLayer(marker));
-		crimeMarkers = [];
-
-		// Log each crime with its coordinates
-		crimes.forEach((crime, index) => {
-			console.log(`Crime #${index + 1}:`, {
-				type: crime.text_general_code,
-				latitude: crime.lat,
-				longitude: crime.lon,
-				date: crime.dispatch_date_time,
-				hasValidCoords: !!(crime.lat && crime.lon),
-			});
-
-			// Skip if missing coordinates or invalid
-			if (
-				!crime.lat ||
-				!crime.lon ||
-				crime.lat === null ||
-				crime.lon === null
-			) {
-				console.warn(`Crime #${index + 1} missing coordinates:`, crime);
-				return;
-			}
-
-			// Create marker
-			const marker = L.circleMarker([crime.lat, crime.lon], {
-				radius: 5,
-				color: 'red',
-				fillColor: '#f03',
-				fillOpacity: 0.6,
-			}).addTo(map);
-
-			marker.bindPopup(`
-				<b>${crime.text_general_code || 'Unknown'}</b><br>
-				Date: ${crime.dispatch_date_time || 'N/A'}<br>
-				Lat: ${crime.lat}<br>
-				Lon: ${crime.lon}
-			`);
-
-			crimeMarkers.push(marker);
-		});
-
-		console.log(
-			`Successfully loaded ${crimeMarkers.length} crime markers on map`
-		);
-		console.log(
-			`Skipped ${
-				crimes.length - crimeMarkers.length
-			} crimes due to missing coordinates`
-		);
 	} catch (error) {
 		console.error('Error loading crime markers:', error);
 	}
 }
 
+//Create the pins using the data from the fetched data
+function createMarker(crimes) {
+	clearMap();
+	crimes.forEach((crime, index) => {
+		if (!crime.lat || !crime.lon) return;
+
+		const marker = L.circleMarker([crime.lat, crime.lon], {
+			radius: 5,
+			color: 'red',
+			fillColor: '#f03',
+			fillOpacity: 0.6,
+		}).addTo(map);
+
+		marker.bindPopup(`
+           <b>${crime.text_general_code || 'Unknown'}</b><br>
+           Date: ${crime.dispatch_date_time || 'N/A'}<br>
+           Lat: ${crime.lat}<br>
+           Lon: ${crime.lon}
+       `);
+		crimeMarkers.push(marker);
+	});
+}
+// create heatmap on the map
+function createHeatMap(crimes) {
+	clearMap();
+	heatPoints = crimes
+		.filter((crime) => crime.lat && crime.lon) //filter data from api
+		.map((crime) => {
+			const intensity = crimeSeverity.get(crime.text_general_code) ?? 0.3;
+			return [crime.lat, crime.lon, intensity];
+		});
+	heatLayer = L.heatLayer(heatPoints, {
+		radius: 25,
+		blur: 10,
+		maxZoom: 17,
+	}).addTo(map);
+}
+// Clear the markers from the map
+function clearMarkers() {
+	crimeMarkers.forEach((marker) => map.removeLayer(marker));
+	crimeMarkers = [];
+}
+// Clear the heatmap from the  map
+function clearHeatMap() {
+	if (heatLayer) {
+		map.removeLayer(heatLayer);
+		heatLayer = null;
+	}
+	heatPoints = [];
+}
+
+function clearMap() {
+	clearHeatMap();
+	clearMarkers();
+}
+
+const pins = document
+	.getElementById('pinsbtn')
+	.addEventListener('click', () => {
+		createMarker(crimes);
+	});
+const heatmap = document
+	.getElementById('heatmapbtn')
+	.addEventListener('click', () => {
+		createHeatMap(crimes);
+	});
+
+//Load map with pins when page is loaded
 document.addEventListener('DOMContentLoaded', () => {
 	console.log('DOM loaded, initializing crime data...');
-	loadCrimeMarkers(3);
+	loadCrimeData(30);
 
-	// Refresh every 30 mins
 	setInterval(() => {
 		console.log('Auto-refreshing crime data...');
-		loadCrimeMarkers(3);
+		loadCrimeData(30);
 	}, 1860000);
 });
