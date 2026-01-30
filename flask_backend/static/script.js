@@ -48,6 +48,7 @@ async function loadCrimeData(days = 1) {
 	}
 }
 
+
 // Run when page loads
 document.addEventListener('DOMContentLoaded', () => {
 	loadCrimeData(1);
@@ -58,4 +59,5 @@ document.addEventListener('DOMContentLoaded', () => {
 		const days = e.target.value;
 		loadCrimeData(days);
 	});
+
 });
