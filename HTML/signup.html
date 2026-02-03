@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <title>Sign Up | Philly Crime Watch</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+<body class="is-preload">
+
+  <div id="wrapper">
+
+    <!-- Header -->
+    <header id="header">
+      <a href="index.html" class="logo">Sentinel</a>
+    </header>
+
+    <!-- Nav -->
+    <nav id="nav">
+      <ul class="links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="map.html">Crime Map</a></li>
+        <li><a href="data.html">Statistics</a></li>
+        <li><a href="reports.html">Reports</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li class="active"><a href="signup.html">Sign Up</a></li>
+      </ul>
+    </nav>
+
+    <!-- Main -->
+    <div id="main">
+      <section class="post">
+        <header class="major">
+          <h1>Create an Account</h1>
+          <p>Join Philly Crime Watch and stay informed</p>
+        </header>
+
+        <form action="/signup" method="POST">
+          <div class="fields">
+            <div class="field">
+              <label>Full Name</label>
+              <input type="text" name="name" required />
+            </div>
+
+            <div class="field">
+              <label>Email</label>
+              <input type="email" name="email" required />
+            </div>
+
+            <div class="field">
+              <label>Password</label>
+              <input type="password" name="password" required />
+            </div>
+          </div>
+
+          <ul class="actions special">
+            <li><button type="submit" class="button primary">Sign Up</button></li>
+          </ul>
+
+          <p style="text-align:center;">
+            Already have an account? <a href="login.html">Login here</a>.
+          </p>
+        </form>
+      </section>
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer">
+      <section class="split contact">
+        <section class="alt">
+          <h3>Address</h3>
+          <p>Philadelphia, PA</p>
+        </section>
+        <section>
+          <h3>Email</h3>
+          <p><a href="mailto:info@phillycrimewatch.org">info@phillycrimewatch.org</a></p>
+        </section>
+      </section>
+    </footer>
+
+  </div>
+
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
