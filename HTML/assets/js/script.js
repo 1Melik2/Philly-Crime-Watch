@@ -3,6 +3,22 @@ let heatPoints = [];
 let heatLayer = null;
 let crimes;
 
+// Filter / view tracking
+let currentFilter = 'all';
+let currentView = 'pins'; 
+
+const violentCrimes = new Set([
+	'Robbery Firearm',
+	'Robbery No Firearm',
+	'Rape',
+	'Aggravated Assault Firearm',
+	'Aggravated Assault No Firearm',
+	'Other Assaults',
+	'Homicide - Criminal',
+	'Homicide - Gross Negligence',
+	'Homicide - Justifiable',
+]);
+
 const crimeSeverity = new Map([
 	['Thefts', 0.3],
 	['Theft from Vehicle', 0.4],
@@ -23,6 +39,17 @@ const crimeSeverity = new Map([
 	['Homicide - Gross Negligence', 0.9],
 	['Homicide - Justifiable', 0.8],
 ]);
+
+
+// Crime filtering helper functions (Violent vs Non-Violent)
+function filterByViolence(crimes, filter) {
+	if (filter === 'all') return crimes;
+
+	return crimes.filter((crime) => {
+		const isViolent = violentCrimes.has(crime.text_general_code);
+		return filter === 'violent' ? isViolent : !isViolent;
+	});
+}
 
 //Fetch data from python
 async function loadCrimeData(days = 30) {
@@ -50,12 +77,25 @@ function createMarker(crimes) {
 	crimes.forEach((crime, index) => {
 		if (!crime.lat || !crime.lon) return;
 
-		const marker = L.circleMarker([crime.lat, crime.lon], {
-			radius: 5,
-			color: 'red',
-			fillColor: '#f03',
-			fillOpacity: 0.6,
-		}).addTo(map);
+		// Determine if the crime is violent or not
+const isViolent = violentCrimes.has(crime.text_general_code);
+const markerColor = isViolent ? 'red' : 'blue';
+
+const marker = L.circleMarker([crime.lat, crime.lon], {
+	radius: 5,
+	color: markerColor,     
+	fillColor: markerColor,   
+	fillOpacity: 0.6,
+}).addTo(map);
+
+// Show violent/non-violent in the popup
+marker.bindPopup(`
+   <b>${crime.text_general_code || 'Unknown'}</b><br>
+   Type: ${isViolent ? 'Violent' : 'Non-violent'}<br>
+   Date: ${crime.dispatch_date_time || 'N/A'}<br>
+   Lat: ${crime.lat}<br>
+   Lon: ${crime.lon}
+`);
 
 		marker.bindPopup(`
            <b>${crime.text_general_code || 'Unknown'}</b><br>
@@ -100,16 +140,33 @@ function clearMap() {
 	clearMarkers();
 }
 
-const pins = document
-	.getElementById('pinsbtn')
-	.addEventListener('click', () => {
-		createMarker(crimes);
-	});
-const heatmap = document
-	.getElementById('heatmapbtn')
-	.addEventListener('click', () => {
-		createHeatMap(crimes);
-	});
+// Pins / HeatMap button listeners (respect current filter)
+document.getElementById('pinsbtn').addEventListener('click', () => {
+	currentView = 'pins';
+	const filteredCrimes = filterByViolence(crimes, currentFilter);
+	createMarker(filteredCrimes);
+});
+
+document.getElementById('heatmapbtn').addEventListener('click', () => {
+	currentView = 'heatmap';
+	const filteredCrimes = filterByViolence(crimes, currentFilter);
+	createHeatMap(filteredCrimes);
+});
+
+// Dropdown listener for violent / non-violent filter
+document.getElementById('crimeFilter').addEventListener('change', (e) => {
+	currentFilter = e.target.value;
+
+	if (!crimes || crimes.length === 0) return; // wait until crimes are loaded
+
+	const filteredCrimes = filterByViolence(crimes, currentFilter);
+
+	if (currentView === 'pins') {
+		createMarker(filteredCrimes);
+	} else if (currentView === 'heatmap') {
+		createHeatMap(filteredCrimes);
+	}
+});
 
 //Load map with pins when page is loaded
 document.addEventListener('DOMContentLoaded', () => {
