@@ -1,0 +1,159 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <title>About Us | Philly Crime Watch</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+  <noscript><link rel="stylesheet" href="{{ url_for('static', filename='css/noscript.css') }}" /></noscript>
+</head>
+<body class="is-preload">
+
+  <div id="wrapper" >
+	    <!-- Hero / Intro -->
+    <div id="intro" style="background-image:url('{{ url_for('static', filename='images/philly3.jpg') }}'); background-size:cover; background-position:center;">
+      <div class="overlay" style="background:rgba(0,0,0,0.5); padding:2em; text-align:center;"">
+        <h1>This Is Our Story</h1>
+          <p>We are a team dedicated to keeping communities informed and secure by providing real-time and<br />
+           	historical crime data—accessible to anyone, anywhere.</p>
+        <ul class="actions" style="display:inline-block; margin-top:1.5em;">
+          <li><a href="#header" class="button icon solid solo fa-arrow-down scrolly">Explore</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <header id="header">
+      <a href="{{ url_for('index') }}" class="logo">Sentinel</a>
+    </header>
+
+    <!-- Nav -->
+    <nav id="nav">
+      <ul class="links">
+        <li><a href="{{ url_for('index') }}">Home</a></li>
+        <li><a href="{{ url_for('crime_map') }}">Crime Map</a></li>
+        <li><a href="{{ url_for('data') }}">Statistics</a></li>
+        <li><a href="{{ url_for('reports') }}">Reports</a></li>
+        <li class="active"><a href="{{ url_for('about') }}">About Us</a></li>
+        <li><a href="{{ url_for('contact') }}">Contact</a></li>
+      </ul>
+      <ul class="icons">
+        <li>
+          <a href="https://gitlab.com/yourusername/phillycrimewatch" class="icon brands fa-gitlab">
+            <span class="label">GitLab</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Main -->
+    <div id="main">
+
+      <!-- Intro Section -->
+      <article class="post featured">
+        <header class="major">
+          <h1>Why We Exist</h1>
+          <p>
+            Our platform is designed to be both easy to use and highly detailed, offering clear insights into current and past crimes within the Philadelphia area. <br />
+            By combining live updates with historical data, we help users stay informed and aware of the patterns shaping their communities. <br />
+            At the core of our mission is innovation — finding smarter ways to protect, defend, and ultimately save lives. Through the analysis of past and live incidents, we aim to support proactive decision-making and foster a safer, more secure future for everyone.
+          </p>
+        </header>
+        <a href="#" class="image main"><img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Philly Crime Watch Logo" /></a>
+      </article>
+
+      <!-- Vision, Mission & Success -->
+      <section class="posts">
+        <article>
+          <header>
+            <h2>Our Vision</h2>
+          </header>
+          <a href="#" class="image fit"><img src="{{ url_for('static', filename='images/vision.jpg') }}" alt="Our Vision - community collaboration" /></a>
+          <p>
+            To build a city where safety is strengthened by information. We envision a future where open access to data drives awareness, collaboration, and trust between citizens and local authorities.
+          </p>
+        </article>
+
+        <article>
+          <header>
+            <h2>Our Mission</h2>
+          </header>
+          <a href="#" class="image fit"><img src="{{ url_for('static', filename='images/mission.jpg') }}" alt="Our Mission - real-time insights" /></a>
+          <p>
+            Our mission is to combine data and design to deliver clear, real-time insights on crime patterns throughout Philadelphia.
+            We aim to transform raw data into meaningful visuals and alerts — so that every resident can make informed decisions about their safety and community.
+          </p>
+        </article>
+
+        <article>
+          <header>
+            <h2>Success</h2>
+          </header>
+          <a href="#" class="image fit"><img src="{{ url_for('static', filename='images/success.jpg') }}" alt="Success - teamwork and results" /></a>
+          <p>
+            Our definition of success is to work coherently as a team and ensure we finish with a well-designed website that displays all the data users need in a clear and accessible way.
+          </p>
+        </article>
+
+        <article>
+          <header>
+            <h2>Who we are</h2>
+          </header>
+          <a href="#" class="image fit"><img src="{{ url_for('static', filename='images/team.jpg') }}" alt="Our Team - collaboration" /></a>
+          <p>
+            We’re a diverse group of developers, data scientists, and designers passionate about technology for good.
+            Together, we believe that transparency is key to trust and that every Philadelphian deserves access to reliable safety information.
+          </p>
+          <ul>
+            <li><strong>Balat Melik</strong> — Back end</li>
+            <li><strong>Jeremy Ramos</strong> — Front end</li>
+            <li><strong>Shaun Kim</strong> — Front end</li>
+            <li><strong>Shayan Idrees</strong> — Back end</li>
+          </ul>
+        </article>
+      </section>
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer">
+      <section class="split contact">
+        <section class="alt">
+          <h3>Address</h3>
+          <p>Philadelphia, PA</p>
+        </section>
+        <section>
+          <h3>Email</h3>
+          <p><a href="mailto:info@phillycrimewatch.org">info@phillycrimewatch.org</a></p>
+        </section>
+        <section>
+          <h3>Social</h3>
+          <ul class="icons alt">
+            <li>
+              <a href="https://gitlab.com/yourusername/phillycrimewatch" class="icon brands alt fa-gitlab">
+                <span class="label">GitLab</span>
+              </a>
+            </li>
+          </ul>
+        </section>
+      </section>
+    </footer>
+
+    <div id="copyright">
+      <ul>
+        <li>&copy; Philly Crime Watch</li>
+        <li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/jquery.scrollex.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/jquery.scrolly.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/browser.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/breakpoints.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/util.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="eng">
+	<head>
+		<title>Crime Map | Philly Crime Watch</title>
+		<meta charset="utf-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, user-scalable=no"
+		/>
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+		<noscript
+			><link rel="stylesheet" href="{{ url_for('static', filename='css/noscript.css') }}"
+		/></noscript>
+		<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+	</head>
+	<body class="is-preload">
+		<div id="wrapper">
+			<!-- Header -->
+			<header id="header">
+				<a href="{{ url_for('index') }}" class="logo">Sentinel</a>
+			</header>
+
+			<!-- Nav -->
+			<nav id="nav">
+				<ul class="links">
+					<li><a href="{{ url_for('index') }}">Home</a></li>
+					<li class="active"><a href="{{ url_for('crime_map') }}">Crime Map</a></li>
+					<li><a href="{{ url_for('data') }}">Statistics</a></li>
+					<li><a href="{{ url_for('reports') }}">Reports</a></li>
+					<li><a href="{{ url_for('about') }}">About Us</a></li>
+				</ul>
+			</nav>
+
+			<!-- Main -->
+			<div id="main">
+				<article class="post featured">
+					<header class="major">
+						<h2>Interactive Crime Map</h2>
+						<p>
+							Zoom in and explore incidents across Philadelphia neighborhoods.
+						</p>
+					</header>
+
+                    <select id="crimeFilter">
+	                    <option value="all">All Crimes</option>
+	                    <option value="violent">Violent Crimes</option>
+	                    <option value="non-violent">Non-Violent Crimes</option>
+                    </select>
+
+					<button id="pinsbtn">Pins</button>
+					<button id="heatmapbtn">HeatMap</button>
+
+					<div id="map" style="height: 500px"></div>
+				</article>
+			</div>
+
+			<!-- Footer -->
+			<footer id="footer">
+				<p>
+					&copy; 2025 Philly Crime Watch | Data from
+					<a href="https://opendataphilly.org/">OpenDataPhilly</a>
+				</p>
+			</footer>
+		</div>
+
+		<!-- Scripts -->
+		<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+		<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+		<script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+		<script>
+			// Basic Leaflet map setup
+			const phillyBounds = L.latLngBounds(
+				[39.87, -75.28], // Southwest
+				[40.14, -74.95] // Northeast
+			);
+
+			const map = L.map('map', {
+				center: [39.9526, -75.1652],
+				zoom: 12,
+				minZoom: 11,
+				maxZoom: 18,
+				maxBounds: phillyBounds,
+				maxBoundsViscosity: 1.0,
+			});
+			L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				attribution: '&copy; OpenStreetMap contributors',
+			}).addTo(map);
+		</script>
+	</body>
+</html>

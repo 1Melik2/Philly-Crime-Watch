@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <title>Contact | Philly Crime Watch</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+  <noscript><link rel="stylesheet" href="{{ url_for('static', filename='css/noscript.css') }}" /></noscript>
+</head>
+<body class="is-preload">
+  <div id="wrapper">
+    <header id="header">
+      <a href="{{ url_for('index') }}" class="logo">Sentinel</a>
+    </header>
+    <nav id="nav">
+      <ul class="links">
+        <li><a href="{{ url_for('index') }}">Home</a></li>
+        <li><a href="{{ url_for('crime_map') }}">Crime Map</a></li>
+        <li><a href="{{ url_for('data') }}">Statistics</a></li>
+        <li><a href="{{ url_for('reports') }}">Reports</a></li>
+        <li><a href="{{ url_for('about') }}">About Us</a></li>
+        <li class="active"><a href="{{ url_for('contact') }}">Contact</a></li>
+      </ul>
+    </nav>
+    <div id="main">
+      <article class="post featured">
+        <header class="major">
+          <h2>Contact Us</h2>
+          <p>Email: info@phillycrimewatch.org</p>
+          <p>Philadelphia, PA</p>
+        </header>
+      </article>
+    </div>
+    <footer id="footer">
+      <p>&copy; 2025 Philly Crime Watch</p>
+    </footer>
+  </div>
+  <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

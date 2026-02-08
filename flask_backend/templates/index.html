@@ -1,130 +1,222 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Philadelphia Crime Dashboard</title>
-
-		<script src="http://vizw.it/scripts/vizwit-embed.js"></script>
-		<link rel="stylesheet" href="{{ url_for('static', filename='data_style.css') }}">
-
+		<title>Philly Crime Watch</title>
+		<meta charset="utf-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, user-scalable=no"
+		/>
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+		<noscript
+			><link rel="stylesheet" href="{{ url_for('static', filename='css/noscript.css') }}"
+		/></noscript>
 	</head>
-
-	<body>
-		<h1>Philadelphia Crime Dashboard</h1>
-
-		<div>
-			<label for="timeRange"><strong>Show data from:</strong></label>
-			<select id="timeRange">
-				<option value="1">Past 1 Day</option>
-				<option value="7">Past 7 Days</option>
-				<option value="30">Past 30 Days</option>
-			</select>
-		</div>
-
-		<canvas id="crimeChart" width="400" height="200"></canvas>
-
-		<h3>Chart Overview</h3>
-		<ul id="crime-list">
-			<li>Loading data...</li>
-		</ul>
-
-		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-		<script src="{{ url_for('static', filename='script.js') }}"></script>
-
-
-		<h2>Crime Incidents by Location Block</h2>
-
-		<div style="min-height: 500px; max-height: 700px;">
-			<h2>Crime Incidents by Location Block</h2>
-
-		<script class="vizwit" type="application/json">
-		{
-		"title": "Location (block)",
-		"description": "Location of incidents generalized by street block",
-		"chartType": "bar",
-		"provider": "carto",
-		"domain": "phl.carto.com",
-		"dataset": "incidents_part1_part2",
-		"groupBy": "location_block",
-		"triggerField": "location_block",
-		"baseFilters": [],
-		"filters": {},
-		"aggregateFunction": "count"
-		}
-		</script>
-		</div>
-
-		
-
-		
-
-
-
-		<section class="card">
-			<h2>Police District Map</h2>
-			<div class="map-container">
-				<div id="police-district-map" style="width: 100%; height: 600px; position: relative;">
-					<script class="vizwit" type="application/json">
-					{
-					"title": "Police District",
-					"provider": "carto",
-					"domain": "phl.carto.com",
-					"dataset": "incidents_part1_part2",
-					"chartType": "choropleth",
-					"groupBy": "dc_dist",
-					"boundaries": "https://phl.carto.com/api/v2/sql?q=select+*,+LPAD(dist_num::text,2,'0')+as+dist_num_text+from+police_districts&format=geojson",
-					"boundariesLabel": "dist_num",
-					"boundariesId": "dist_num_text",
-					"triggerField": "dc_dist",
-					"baseFilters": [],
-					"filters": {},
-					"aggregateFunction": "count",
-					"colorScheme": "YlOrRd",
-					"strokeColor": "#ffffff",
-					"strokeWidth": 2,
-					"fillOpacity": 0.8
-					}
-					</script>
+	<body class="is-preload">
+		<!-- Wrapper -->
+		<div id="wrapper" class="fade-in">
+			<!-- Hero / Intro -->
+			<div
+				id="intro"
+				style="
+					background-image: url('{{ url_for('static', filename='images/philly3.jpg') }}');
+					background-size: cover;
+					background-position: center;
+				"
+			>
+				<div
+					class="overlay"
+					style="background: rgba(0, 0, 0, 0.5); padding: 2em"
+				>
+					<h1>Philly Crime Watch</h1>
+					<p>
+						Stay informed. Stay safe.<br />
+						Transparency through data — empowering Philadelphia communities.
+					</p>
+					<ul class="actions" style="display: inline-block; margin-top: 1.5em">
+						<li>
+							<a
+								href="#main"
+								class="button icon solid solo fa-arrow-down scrolly"
+								>Explore</a
+							>
+						</li>
+					</ul>
 				</div>
 			</div>
-		</section>
 
-		<section class="card">
-			<h2>Recent Crime Table</h2>
+			<!-- Header -->
+			<header id="header">
+				<a href="{{ url_for('index') }}" class="logo">Sentinel</a>
+			</header>
 
-			<div class="vizwit-container">
-				<script class="vizwit" type="application/json">
-				{
-				"title": "Crime Incidents",
-				"chartType": "table",
-				"provider": "carto",
-				"domain": "phl.carto.com",
-				"dataset": "incidents_part1_part2",
-				"order": "dispatch_date_time desc",
-				"columnsToHide": [
-					"cartodb_id",
-					"objectid",
-					"the_geom",
-					"the_geom_webmercator"
-				],
-				"baseFilters": [
-					{
-					"field": "dispatch_date_time",
-					"expression": {
-						"type": "is not",
-						"value": null
-					}
-					}
-				],
-				"filters": {},
-				"limit": 100,
-				"offset": 0
-				}
-				</script>
+			<!-- Nav -->
+			<nav id="nav">
+				<ul class="links">
+					<li class="active"><a href="{{ url_for('index') }}">Home</a></li>
+					<li><a href="{{ url_for('crime_map') }}">Crime Map</a></li>
+					<li><a href="{{ url_for('data') }}">Statistics</a></li>
+					<li><a href="{{ url_for('reports') }}">Reports</a></li>
+					<li><a href="{{ url_for('about') }}">About Us</a></li>
+					<li><a href="{{ url_for('contact') }}">Contact</a></li>
+				</ul>
+				<ul class="icons">
+					<li>
+						<a
+							href="https://gitlab.com/yourusername/phillycrimewatch"
+							class="icon brands fa-gitlab"
+						>
+							<span class="label">GitLab</span>
+						</a>
+					</li>
+				</ul>
+			</nav>
+
+			<!-- Main -->
+			<div id="main">
+				<!-- Welcome Block -->
+				<article class="post featured">
+					<header class="major">
+						<h2>Welcome to Philly Crime Watch</h2>
+						<p>
+							Our mission is simple: provide clear, accessible crime data so
+							every Philadelphian can make informed decisions about their safety
+							and community. This homepage gives you a snapshot — dive deeper
+							into maps, statistics, and reports through the links below.
+						</p>
+					</header>
+				</article>
+
+				<!-- Quick Stats Counters -->
+				<section class="posts" id="highlights">
+					<article>
+						<header>
+							<h2>
+								<i class="fas fa-shield-alt"></i> Crimes In The Last 30 Days
+							</h2>
+						</header>
+						<p id="monthly-crimes">
+							<strong>Loading...</strong> incidents reported
+						</p>
+					</article>
+					<article>
+						<header>
+							<h2><i class="fas fa-city"></i> Neighborhoods Tracked</h2>
+						</header>
+						<p id="neighborhood-count">
+							<strong>Loading...</strong> active areas
+						</p>
+					</article>
+					<article>
+						<header>
+							<h2><i class="fas fa-sync-alt"></i> Most Recent Crimes</h2>
+						</header>
+						<p><strong id="latest-crime">Loading...</strong></p>
+					</article>
+				</section>
+
+				<!-- Teaser Grid -->
+				<section class="posts">
+					<article id="map">
+						<header><h2>Crime Map</h2></header>
+						<a href="{{ url_for('crime_map') }}" class="image fit"
+							><img src="{{ url_for('static', filename='images/philly1.jpg') }}" alt="Philadelphia crime map"
+						/></a>
+						<p>Explore incidents across Philadelphia neighborhoods.</p>
+						<a href="{{ url_for('crime_map') }}" class="button">View Full Map</a>
+					</article>
+
+					<article id="stats">
+						<header><h2>Statistics</h2></header>
+						<a href="{{ url_for('data') }}" class="image fit"
+							><img
+								src="{{ url_for('static', filename='images/pic01.jpg') }}"
+								alt="Crime statistics preview"
+						/></a>
+						<p>Trends by type, year, and neighborhood.</p>
+						<a href="{{ url_for('data') }}" class="button">See Full Stats</a>
+					</article>
+
+					<article id="news">
+						<header><h2>Reports</h2></header>
+						<a href="{{ url_for('reports') }}" class="image fit"
+							><img
+								src="{{ url_for('static', filename='images/pic02.jpg') }}"
+								alt="Recent crime report preview"
+						/></a>
+						<p>
+							<strong>Featured:</strong> Arrest in Center City — details about a
+							recent incident.
+						</p>
+						<a href="{{ url_for('reports') }}" class="button">View All Reports</a>
+					</article>
+
+					<article id="resources">
+						<header><h2>Community Resources</h2></header>
+						<a href="{{ url_for('resources') }}" class="image fit"
+							><img
+								src="{{ url_for('static', filename='images/pic03.jpg') }}"
+								alt="Community resources preview"
+						/></a>
+						<p>Connect with local programs and initiatives.</p>
+						<a href="{{ url_for('resources') }}" class="button">Explore Resources</a>
+					</article>
+				</section>
 			</div>
-		</section>
 
-	
+			<!-- Footer -->
+			<footer id="footer">
+				<section class="split contact">
+					<section class="alt">
+						<h3>Address</h3>
+						<p>Philadelphia, PA</p>
+					</section>
+					<section>
+						<h3>Email</h3>
+						<p>
+							<a href="mailto:info@phillycrimewatch.org"
+								>info@phillycrimewatch.org</a
+							>
+						</p>
+					</section>
+					<section>
+						<h3>Social</h3>
+						<ul class="icons alt">
+							<li>
+								<a
+									href="https://gitlab.com/yourusername/phillycrimewatch"
+									class="icon brands alt fa-gitlab"
+								>
+									<span class="label">GitLab</span>
+								</a>
+							</li>
+						</ul>
+					</section>
+				</section>
+				<section>
+					<p>
+						<strong>Get involved in your community today</strong> — join your
+						neighborhood watch or explore local initiatives.
+					</p>
+				</section>
+			</footer>
+
+			<div id="copyright">
+				<ul>
+					<li>&copy; 2025 Philly Crime Watch</li>
+					<li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
+				</ul>
+			</div>
+		</div>
+
+		<!-- Scripts -->
+		<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/jquery.scrollex.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/jquery.scrolly.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/browser.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/breakpoints.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/util.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/updates.js') }}"></script>
 	</body>
 </html>

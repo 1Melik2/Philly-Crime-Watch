@@ -6,8 +6,32 @@ app = Flask(__name__)
 CORS(app)
 
 @app.route("/")
-def home():
+def index():
     return render_template("index.html")
+
+@app.route("/reports")
+def reports():
+    return render_template("reports.html")
+
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
+@app.route("/map")
+def crime_map():
+    return render_template("map.html")
+
+@app.route("/data")
+def data():
+    return render_template("data.html")
+
+@app.route("/contact")
+def contact():
+    return render_template("contact.html")
+
+@app.route("/resources")
+def resources():
+    return render_template("resources.html")
 
 # CRIME STATISTICS (for your chart)
 @app.route('/api/crime')
