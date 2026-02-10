@@ -178,3 +178,52 @@ document.addEventListener('DOMContentLoaded', () => {
 		loadCrimeData(30);
 	}, 1860000);
 });
+
+// --- ZIP CODE SEARCH ADDITIONS ---
+
+async function searchZipCode() {
+    const zip = document.getElementById('zipInput').value.trim();
+    
+    // Validate Philly zip codes
+    if (!zip || !zip.startsWith('191')) {
+        alert("Please enter a valid Philadelphia Zip Code (e.g., 19104)");
+        return;
+    }
+
+    try {
+        // Fetch coordinates from Nominatim
+        const response = await fetch(`https://nominatim.openstreetmap.org/search?postalcode=${zip}&country=US&format=json`);
+        const data = await response.json();
+
+        if (data.length > 0) {
+            const lat = parseFloat(data[0].lat);
+            const lon = parseFloat(data[0].lon);
+
+            // Move the map to the found location
+            map.setView([lat, lon], 14); 
+
+            // Add a temporary popup to confirm location
+            L.popup()
+                .setLatLng([lat, lon])
+                .setContent(`Viewing Zip Code: ${zip}`)
+                .openOn(map);
+        } else {
+            alert("Zip code not found. Please try another.");
+        }
+    } catch (error) {
+        console.error("Error fetching zip code:", error);
+    }
+}
+
+// Event Listeners for new UI elements
+document.getElementById('searchBtn').addEventListener('click', searchZipCode);
+
+document.getElementById('zipInput').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') searchZipCode();
+});
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+    // Returns map to default Philly view
+    map.setView([39.9526, -75.1652], 12);
+    document.getElementById('zipInput').value = '';
+});
