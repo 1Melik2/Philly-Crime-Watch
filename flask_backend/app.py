@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
 import requests
+from model import monthly_linear_regression
 
 app = Flask(__name__)
 CORS(app)
@@ -88,30 +89,136 @@ def latest_crime():
     else:
         return jsonify({'error': 'No data found'}), 404
 
-# NEIGHBORHOODS Tracked
+# NEIGHBORHOODS Tracked + Crimes + Dates
 @app.route('/api/neighborhoods')
-def neighborhood_count():
+def neighborhood_data():
+    days = request.args.get('days', default=30, type=int)
+
     url = (
         "https://phl.carto.com/api/v2/sql?"
-        "q=SELECT COUNT(DISTINCT psa) as neighborhood_count "
-        "FROM incidents_part1_part2 "
-        "WHERE psa IS NOT NULL"
+        f"q=SELECT "
+        f"psa, "
+        f"text_general_code, "
+        f"dispatch_date_time "
+        f"FROM incidents_part1_part2 "
+        f"WHERE psa IS NOT NULL "
+        f"AND text_general_code IS NOT NULL "
+        f"AND dispatch_date_time >= NOW() - INTERVAL '{days} days' "
+        f"ORDER BY dispatch_date_time DESC "
+        f"LIMIT 1000"
     )
-    
+
     response = requests.get(url)
-    
+
     if response.status_code != 200:
-        return jsonify({'error': 'Failed to fetch neighborhood count'}), 500
-    
+        return jsonify({'error': 'Failed to fetch neighborhood data'}), 500
+
     data = response.json()
     rows = data.get('rows', [])
-    
-    if rows:
-        return jsonify({
-            "count": rows[0].get("neighborhood_count", 0)
-        })
-    else:
-        return jsonify({'error': 'No data found'}), 404
+
+    return jsonify({
+        "neighborhood_count": len(set(row["psa"] for row in rows)),
+        "data": rows
+    })
+
+@app.route('/api/crime_compare')
+def crime_compare():
+    current_start = request.args.get('current_start')
+    current_end = request.args.get('current_end')
+    previous_start = request.args.get('previous_start')
+    previous_end = request.args.get('previous_end')
+    psa = request.args.get('psa')
+
+    where_conditions = [
+        "text_general_code IS NOT NULL"
+    ]
+
+    if psa:
+        where_conditions.append(f"psa = '{psa}'")
+
+    where_clause = " AND ".join(where_conditions)
+
+    url = (
+        "https://phl.carto.com/api/v2/sql?"
+        f"q=SELECT "
+        f"text_general_code AS crime_type, "
+        f"SUM(CASE WHEN dispatch_date_time BETWEEN '{current_start}' AND '{current_end}' THEN 1 ELSE 0 END) AS current_count, "
+        f"SUM(CASE WHEN dispatch_date_time BETWEEN '{previous_start}' AND '{previous_end}' THEN 1 ELSE 0 END) AS previous_count "
+        f"FROM incidents_part1_part2 "
+        f"WHERE {where_clause} "
+        f"GROUP BY text_general_code "
+        f"ORDER BY current_count DESC"
+    )
+
+    response = requests.get(url)
+
+    if response.status_code != 200:
+        return jsonify({'error': 'Failed to fetch data'}), 500
+
+    data = response.json()
+    rows = data.get('rows', [])
+
+    return jsonify({
+        "psa": psa if psa else "All",
+        "current_period": f"{current_start} to {current_end}",
+        "previous_period": f"{previous_start} to {previous_end}",
+        "data": rows
+    })
+
+@app.route("/api/forecast")
+def forecast():
+    crime_type = request.args.get("crime_type", "THEFT")
+
+    url = (
+        "https://phl.carto.com/api/v2/sql?"
+        f"q=SELECT dispatch_date_time "
+        f"FROM incidents_part1_part2 "
+        f"WHERE text_general_code = '{crime_type}' "
+        f"AND dispatch_date_time >= NOW() - INTERVAL '3 years'"
+    )
+
+    response = requests.get(url)
+
+    if response.status_code != 200:
+        return jsonify({"error": "Failed to fetch data"}), 500
+
+    data = response.json()
+    rows = data.get("rows", [])
+
+    result = weekly_linear_regression(rows)
+
+    if not result:
+        return jsonify({"error": "Not enough data"}), 400
+
+    return jsonify(result)
+
+@app.route("/api/monthly_forecast")
+def monthly_forecast():
+
+    crime_type = request.args.get("crime_type", "Thefts")
+
+    url = (
+        "https://phl.carto.com/api/v2/sql?"
+        f"q=SELECT dispatch_date_time "
+        f"FROM incidents_part1_part2 "
+        f"WHERE text_general_code = '{crime_type}' "
+        f"AND dispatch_date_time >= NOW() - INTERVAL '3 years'"
+    )
+
+    response = requests.get(url)
+
+    if response.status_code != 200:
+        return jsonify({"error": "Failed to fetch data"}), 500
+
+    data = response.json()
+    rows = data.get("rows", [])
+
+    result = monthly_linear_regression(rows)
+
+    if not result:
+        return jsonify({"error": "Not enough data"}), 400
+
+    return jsonify(result)
 
 if __name__ == "__main__":
     app.run(debug=True)
