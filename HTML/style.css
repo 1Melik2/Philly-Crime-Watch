@@ -61,6 +61,46 @@ nav a:hover {
   border-bottom: 2px solid #00bcd4;
 }
 
+/* Nav Buttons */
+nav a.nav-btn {
+  background-color: #00bcd4;
+  color: #121418 !important;
+  border-radius: 20px;
+  padding: 0.4rem 1.2rem;
+  margin-left: 0.5rem;
+  font-weight: 700;
+  border-bottom: none !important;
+  box-shadow: 0 4px 6px rgba(0, 188, 212, 0.2);
+  transition: all 0.3s ease;
+}
+
+nav a.nav-btn:hover {
+  background-color: #80deea;
+  box-shadow: 0 6px 12px rgba(0, 188, 212, 0.4);
+  transform: translateY(-2px);
+  border-bottom: none !important;
+}
+
+nav a.nav-btn-outline {
+  background-color: transparent;
+  color: #00bcd4 !important;
+  border: 1px solid #00bcd4;
+  border-radius: 20px;
+  padding: 0.4rem 1.2rem;
+  margin-left: 0.5rem;
+  font-weight: 600;
+  border-bottom: none !important;
+  transition: all 0.3s ease;
+}
+
+nav a.nav-btn-outline:hover {
+  background-color: rgba(0, 188, 212, 0.1);
+  color: #80deea !important;
+  border-color: #80deea;
+  transform: translateY(-2px);
+  border-bottom: none !important;
+}
+
 /* ===== MAIN CONTENT ===== */
 main {
   max-width: 1200px;

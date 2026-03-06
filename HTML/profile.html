@@ -1,0 +1,314 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <title>Profile | Philly Crime Watch</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript>
+        <link rel="stylesheet" href="assets/css/noscript.css" />
+    </noscript>
+    <style>
+        /* Styling for the toggle switches */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: #2196F3;
+        }
+
+        input:focus+.slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(26px);
+        }
+
+        .preference-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1em;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        #message-box {
+            margin-top: 1em;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+            text-align: center;
+        }
+
+        .msg-success {
+            background: rgba(40, 167, 69, 0.2);
+            border: 1px solid #28a745;
+            color: #28a745;
+        }
+
+        .msg-error {
+            background: rgba(220, 53, 69, 0.2);
+            border: 1px solid #dc3545;
+            color: #dc3545;
+        }
+
+        .logout-btn-container {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body class="is-preload">
+
+    <div id="wrapper">
+
+        <!-- Header -->
+        <header id="header">
+            <a href="index.html" class="logo">Sentinel</a>
+        </header>    <!-- Nav -->
+    <nav id="nav">
+      <ul class="links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="map.html">Crime Map</a></li>
+        <li><a href="data.html">Statistics</a></li>
+        <li><a href="reports.html">Reports</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        
+        <!-- Auth Links -->
+        <li class="auth-guest"><a href="signup.html" class="nav-btn">Sign Up</a></li>
+        <li class="auth-guest"><a href="login.html" class="nav-btn-outline">Login</a></li>
+        <li class="auth-user" style="display: none;"><a href="profile.html">Profile</a></li>
+        <li class="auth-user" style="display: none;"><a href="#" class="auth-nav-logout nav-btn-outline">Logout</a></li>
+      </ul>
+      <ul class="icons">
+        <li>
+          <a href="https://gitlab.com/yourusername/phillycrimewatch" class="icon brands fa-gitlab">
+            <span class="label">GitLab</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+        <!-- Main -->
+        <div id="main">
+            <section class="post">
+
+                <header class="major">
+                    <h1>Your Profile</h1>
+                    <p>Manage your account settings and alert preferences</p>
+                    <div class="logout-btn-container">
+                        <button id="logout-btn" class="button small">Logout</button>
+                    </div>
+                </header>
+
+                <form id="profile-form">
+                    <h3>Contact Information</h3>
+                    <div class="fields">
+                        <div class="field half">
+                            <label>Name (Uneditable)</label>
+                            <input type="text" id="name" name="name" disabled />
+                        </div>
+                        <div class="field half">
+                            <label>Email Address</label>
+                            <input type="email" id="email" name="email" required />
+                        </div>
+                        <div class="field">
+                            <label>Phone Number (Include Country Code, e.g. +1...)</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+16104158141" />
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <h3>Notification Preferences</h3>
+                    <p>Choose how you want to receive crime alerts:</p>
+
+                    <div class="preference-row">
+                        <label style="margin-bottom: 0;">Receive Email Alerts</label>
+                        <label class="switch">
+                            <input type="checkbox" id="email_enabled" name="email_enabled">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="preference-row">
+                        <label style="margin-bottom: 0;">Receive SMS Alerts</label>
+                        <label class="switch">
+                            <input type="checkbox" id="sms_enabled" name="sms_enabled">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div id="message-box"></div>
+
+                    <ul class="actions special" style="margin-top: 2em;">
+                        <li><button type="submit" class="button primary" id="save-btn">Save Changes</button></li>
+                    </ul>
+                </form>
+            </section>
+        </div>
+
+        <!-- Footer -->
+        <footer id="footer">
+            <section class="split contact">
+                <section class="alt">
+                    <h3>Address</h3>
+                    <p>Philadelphia, PA</p>
+                </section>
+                <section>
+                    <h3>Email</h3>
+                    <p><a href="mailto:info@phillycrimewatch.org">info@phillycrimewatch.org</a></p>
+                </section>
+            </section>
+        </footer>
+
+    </div>
+
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/main.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            // 1. Fetch User Data
+            try {
+                const response = await fetch('/api/profile');
+                if (response.status === 401) {
+                    // If not logged in, redirect to login
+                    window.location.href = '/login.html';
+                    return;
+                }
+
+                const user = await response.json();
+
+                // Populate the form fields
+                document.getElementById('name').value = user.name || '';
+                document.getElementById('email').value = user.email || '';
+                document.getElementById('phone').value = user.phone || '';
+
+                if (user.preferences) {
+                    document.getElementById('email_enabled').checked = user.preferences.email_enabled;
+                    document.getElementById('sms_enabled').checked = user.preferences.sms_enabled;
+                } else {
+                    // Defaults for old accounts
+                    document.getElementById('email_enabled').checked = true;
+                    document.getElementById('sms_enabled').checked = false;
+                }
+            } catch (err) {
+                console.error("Error fetching profile:", err);
+            }
+
+            // 2. Handle Form Submission
+            const form = document.getElementById('profile-form');
+            const msgBox = document.getElementById('message-box');
+            const saveBtn = document.getElementById('save-btn');
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                saveBtn.disabled = true;
+                saveBtn.innerText = "Saving...";
+
+                const payload = {
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    email_enabled: document.getElementById('email_enabled').checked,
+                    sms_enabled: document.getElementById('sms_enabled').checked
+                };
+
+                try {
+                    const response = await fetch('/api/profile', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const result = await response.json();
+
+                    msgBox.style.display = 'block';
+                    if (response.ok) {
+                        msgBox.className = 'msg-success';
+                        msgBox.innerText = result.message || "Profile updated successfully!";
+                    } else {
+                        msgBox.className = 'msg-error';
+                        msgBox.innerText = result.error || "Failed to update profile.";
+                    }
+
+                } catch (err) {
+                    msgBox.style.display = 'block';
+                    msgBox.className = 'msg-error';
+                    msgBox.innerText = "Network error. Please try again.";
+                } finally {
+                    saveBtn.disabled = false;
+                    saveBtn.innerText = "Save Changes";
+
+                    // Hide message after 5 seconds
+                    setTimeout(() => {
+                        msgBox.style.display = 'none';
+                    }, 5000);
+                }
+            });
+
+            // 3. Handle Logout
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async () => {
+                    try {
+                        const response = await fetch('/api/logout', { method: 'POST' });
+                        if (response.ok) {
+                            window.location.href = '/login.html';
+                        } else {
+                            alert("Failed to log out. Please try again.");
+                        }
+                    } catch (err) {
+                        console.error('Logout error:', err);
+                        alert("Network error while logging out.");
+                    }
+                });
+            }
+        });
+    </script>
+  <script src="assets/js/nav-auth.js"></script>
+</body>
+
+</html>

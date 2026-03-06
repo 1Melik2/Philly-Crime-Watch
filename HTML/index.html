@@ -1,23 +1,28 @@
 <!DOCTYPE HTML>
 <html lang="en">
+
 <head>
   <title>Philly Crime Watch</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
   <link rel="stylesheet" href="assets/css/main.css" />
-  <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+  <noscript>
+    <link rel="stylesheet" href="assets/css/noscript.css" />
+  </noscript>
 </head>
+
 <body class="is-preload">
 
   <!-- Wrapper -->
   <div id="wrapper" class="fade-in">
 
     <!-- Hero / Intro -->
-    <div id="intro" style="background-image:url('images/philly3.jpg'); background-size:cover; background-position:center;">
+    <div id="intro"
+      style="background-image:url('images/philly3.jpg'); background-size:cover; background-position:center;">
       <div class="overlay" style="background:rgba(0,0,0,0.5); padding:2em;">
         <h1>Philly Crime Watch</h1>
-          <p>Stay informed. Stay safe.<br />
-           Transparency through data — empowering Philadelphia communities.</p>
+        <p>Stay informed. Stay safe.<br />
+          Transparency through data — empowering Philadelphia communities.</p>
         <ul class="actions" style="display:inline-block; margin-top:1.5em;">
           <li><a href="#main" class="button icon solid solo fa-arrow-down scrolly">Explore</a></li>
         </ul>
@@ -27,17 +32,21 @@
     <!-- Header -->
     <header id="header">
       <a href="index.html" class="logo">Sentinel</a>
-    </header>
-
-    <!-- Nav -->
+    </header>    <!-- Nav -->
     <nav id="nav">
       <ul class="links">
-        <li class="active"><a href="index.html">Home</a></li>
+        <li><a href="index.html">Home</a></li>
         <li><a href="map.html">Crime Map</a></li>
         <li><a href="data.html">Statistics</a></li>
         <li><a href="reports.html">Reports</a></li>
         <li><a href="about.html">About Us</a></li>
         <li><a href="contact.html">Contact</a></li>
+        
+        <!-- Auth Links -->
+        <li class="auth-guest"><a href="signup.html" class="nav-btn">Sign Up</a></li>
+        <li class="auth-guest"><a href="login.html" class="nav-btn-outline">Login</a></li>
+        <li class="auth-user" style="display: none;"><a href="profile.html">Profile</a></li>
+        <li class="auth-user" style="display: none;"><a href="#" class="auth-nav-logout nav-btn-outline">Logout</a></li>
       </ul>
       <ul class="icons">
         <li>
@@ -56,7 +65,9 @@
         <header class="major">
           <h2>Welcome to Philly Crime Watch</h2>
           <p>
-            Our mission is simple: provide clear, accessible crime data so every Philadelphian can make informed decisions about their safety and community. This homepage gives you a snapshot — dive deeper into maps, statistics, and reports through the links below.
+            Our mission is simple: provide clear, accessible crime data so every Philadelphian can make informed
+            decisions about their safety and community. This homepage gives you a snapshot — dive deeper into maps,
+            statistics, and reports through the links below.
           </p>
         </header>
       </article>
@@ -64,15 +75,21 @@
       <!-- Quick Stats Counters -->
       <section class="posts" id="highlights">
         <article>
-          <header><h2><i class="fas fa-shield-alt"></i> Crimes This Month</h2></header>
+          <header>
+            <h2><i class="fas fa-shield-alt"></i> Crimes This Month</h2>
+          </header>
           <p><strong>245</strong> incidents reported</p>
         </article>
         <article>
-          <header><h2><i class="fas fa-city"></i> Neighborhoods Tracked</h2></header>
+          <header>
+            <h2><i class="fas fa-city"></i> Neighborhoods Tracked</h2>
+          </header>
           <p><strong>55</strong> active areas</p>
         </article>
         <article>
-          <header><h2><i class="fas fa-sync-alt"></i> Reports Updated</h2></header>
+          <header>
+            <h2><i class="fas fa-sync-alt"></i> Reports Updated</h2>
+          </header>
           <p><strong>Daily</strong> from OpenDataPhilly</p>
         </article>
       </section>
@@ -80,29 +97,40 @@
       <!-- Teaser Grid -->
       <section class="posts">
         <article id="map">
-          <header><h2>Crime Map</h2></header>
+          <header>
+            <h2>Crime Map</h2>
+          </header>
           <a href="data.html" class="image fit"><img src="crime-map.png" alt="Philadelphia crime map" /></a>
           <p>Explore incidents across Philadelphia neighborhoods.</p>
           <a href="data.html" class="button">View Full Map</a>
         </article>
 
         <article id="stats">
-          <header><h2>Statistics</h2></header>
-          <a href="data.html" class="image fit"><img src="images/stats-preview.jpg" alt="Crime statistics preview" /></a>
+          <header>
+            <h2>Statistics</h2>
+          </header>
+          <a href="data.html" class="image fit"><img src="images/stats-preview.jpg"
+              alt="Crime statistics preview" /></a>
           <p>Trends by type, year, and neighborhood.</p>
           <a href="data.html" class="button">See Full Stats</a>
         </article>
 
         <article id="news">
-          <header><h2>Reports</h2></header>
-          <a href="reports.html" class="image fit"><img src="images/report-preview.jpg" alt="Recent crime report preview" /></a>
+          <header>
+            <h2>Reports</h2>
+          </header>
+          <a href="reports.html" class="image fit"><img src="images/report-preview.jpg"
+              alt="Recent crime report preview" /></a>
           <p><strong>Featured:</strong> Arrest in Center City — details about a recent incident.</p>
           <a href="reports.html" class="button">View All Reports</a>
         </article>
 
         <article id="resources">
-          <header><h2>Community Resources</h2></header>
-          <a href="resources.html" class="image fit"><img src="images/resources-preview.jpg" alt="Community resources preview" /></a>
+          <header>
+            <h2>Community Resources</h2>
+          </header>
+          <a href="resources.html" class="image fit"><img src="images/resources-preview.jpg"
+              alt="Community resources preview" /></a>
           <p>Connect with local programs and initiatives.</p>
           <a href="resources.html" class="button">Explore Resources</a>
         </article>
@@ -133,7 +161,8 @@
         </section>
       </section>
       <section>
-        <p><strong>Get involved in your community today</strong> — join your neighborhood watch or explore local initiatives.</p>
+        <p><strong>Get involved in your community today</strong> — join your neighborhood watch or explore local
+          initiatives.</p>
       </section>
     </footer>
 
@@ -154,5 +183,7 @@
   <script src="assets/js/breakpoints.min.js"></script>
   <script src="assets/js/util.js"></script>
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/nav-auth.js"></script>
 </body>
+
 </html>

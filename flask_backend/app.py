@@ -1,36 +1,43 @@
-from flask import Flask, jsonify, render_template, request
-import requests
+from flask import Flask, request, jsonify
+from notificationapi_python_server_sdk import notificationapi
+import asyncio
 
 app = Flask(__name__)
 
-@app.route('/')
-def home():
-    return render_template('index.html')
+# Initialize NotificationAPI
+notificationapi.init(
+    "m6sulpvh8jxw1f80wgyxa6cp1r", 
+    "55cfjj8p3owjpostwxqqa29jgqqyhh9s1dj62683692hiwyl5xztmws3xa"
+)
 
-@app.route('/api/crime')
-def crime_data():
-    # get "days" query parameter from the frontend (default: 1)
-    days = request.args.get('days', default=1, type=int)
+@app.route('/send-notification', methods=['POST'])
+def send_notification_route(): # Renamed to avoid shadowing the 'notificationapi' object
+    try:
+        notification_payload = {
+            "notificationId": "crime_dashboard", # Usually 'notificationId' is used instead of 'type'
+            "user": {
+               "id": "mailemail.761@gmail.com",
+               "email": "mailemail.761@gmail.com",
+               "number": "+16104158141" 
+            },
+            "mergeVariables": { # Use mergeVariables if that's what your template expects
+                "comment": "testComment"
+            }
+        }
+        
+        # If the SDK is truly async, we run it in a loop:
+        asyncio.run(notificationapi.send(notification_payload))
+        
+        return jsonify({
+            "success": True,
+            "message": "Notification request processed"
+        }), 200
+        
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
 
-    # dynamically insert the days into the SQL query
-    url = (
-        "https://phl.carto.com/api/v2/sql?"
-        f"q=SELECT text_general_code, COUNT(*) as count "
-        f"FROM incidents_part1_part2 "
-        f"WHERE dispatch_date_time >= NOW() - INTERVAL '{days} days' "
-        f"GROUP BY text_general_code "
-        f"ORDER BY count DESC "
-        f"LIMIT 10"
-    )
-
-    response = requests.get(url)
-
-    if response.status_code != 200:
-        return jsonify({'error': 'Failed to fetch data'}), 500
-
-    data = response.json()
-    crimes = data.get('rows', [])
-    return jsonify(crimes)
-
-if __name__ == "__main__":
-    app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5001)

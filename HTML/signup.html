@@ -1,12 +1,16 @@
 <!DOCTYPE HTML>
 <html lang="en">
+
 <head>
   <title>Sign Up | Philly Crime Watch</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
   <link rel="stylesheet" href="assets/css/main.css" />
-  <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+  <noscript>
+    <link rel="stylesheet" href="assets/css/noscript.css" />
+  </noscript>
 </head>
+
 <body class="is-preload">
 
   <div id="wrapper">
@@ -14,9 +18,7 @@
     <!-- Header -->
     <header id="header">
       <a href="index.html" class="logo">Sentinel</a>
-    </header>
-
-    <!-- Nav -->
+    </header>    <!-- Nav -->
     <nav id="nav">
       <ul class="links">
         <li><a href="index.html">Home</a></li>
@@ -25,7 +27,19 @@
         <li><a href="reports.html">Reports</a></li>
         <li><a href="about.html">About Us</a></li>
         <li><a href="contact.html">Contact</a></li>
-        <li class="active"><a href="signup.html">Sign Up</a></li>
+        
+        <!-- Auth Links -->
+        <li class="auth-guest"><a href="signup.html" class="nav-btn">Sign Up</a></li>
+        <li class="auth-guest"><a href="login.html" class="nav-btn-outline">Login</a></li>
+        <li class="auth-user" style="display: none;"><a href="profile.html">Profile</a></li>
+        <li class="auth-user" style="display: none;"><a href="#" class="auth-nav-logout nav-btn-outline">Logout</a></li>
+      </ul>
+      <ul class="icons">
+        <li>
+          <a href="https://gitlab.com/yourusername/phillycrimewatch" class="icon brands fa-gitlab">
+            <span class="label">GitLab</span>
+          </a>
+        </li>
       </ul>
     </nav>
 
@@ -37,21 +51,21 @@
           <p>Join Philly Crime Watch and stay informed</p>
         </header>
 
-        <form action="/signup" method="POST">
+        <form id="signup-form">
           <div class="fields">
             <div class="field">
               <label>Full Name</label>
-              <input type="text" name="name" required />
+              <input type="text" name="name" id="name" required />
             </div>
 
             <div class="field">
               <label>Email</label>
-              <input type="email" name="email" required />
+              <input type="email" name="email" id="email" required />
             </div>
 
             <div class="field">
               <label>Password</label>
-              <input type="password" name="password" required />
+              <input type="password" name="password" id="password" required />
             </div>
           </div>
 
@@ -63,6 +77,35 @@
             Already have an account? <a href="login.html">Login here</a>.
           </p>
         </form>
+
+        <script>
+          document.getElementById('signup-form').addEventListener('submit', async function (e) {
+            e.preventDefault(); // Prevent standard form submission
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+              const response = await fetch('/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, password })
+              });
+
+              if (response.ok) {
+                alert("Account created successfully! Please login.");
+                window.location.href = 'login.html';
+              } else {
+                const errorData = await response.json();
+                alert("Error creating account: " + (errorData.message || 'Unknown error'));
+              }
+            } catch (error) {
+              console.error('Error during sign up:', error);
+              alert("A network error occurred. Please try again later.");
+            }
+          });
+        </script>
       </section>
     </div>
 
@@ -84,5 +127,7 @@
 
   <script src="assets/js/jquery.min.js"></script>
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/nav-auth.js"></script>
 </body>
+
 </html>
