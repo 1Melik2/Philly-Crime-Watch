@@ -1,139 +1,294 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <title>Crime Statistics | Philly Crime Watch</title>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-  <link rel="stylesheet" href="assets/css/main.css" />
-  <noscript>
-    <link rel="stylesheet" href="assets/css/noscript.css" />
-  </noscript>
+	<title>Crime Statistics | Philly Crime Watch</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<noscript>
+		<link rel="stylesheet" href="assets/css/noscript.css" />
+	</noscript>
+	<style>
+		.time-filter {
+			margin: 1em 0;
+			text-align: right;
+		}
+
+		.time-filter select {
+			padding: 6px 10px;
+			border-radius: 6px;
+			border: 1px solid #ccc;
+			font-size: 14px;
+		}
+	</style>
 </head>
 
 <body class="is-preload">
+	<div id="wrapper">
+		<!-- Hero / Intro -->
+		<div id="intro" style="
+					background-image: url('images/philly3.jpg');
+					background-size: cover;
+					background-position: center;
+				">
+			<div class="overlay" style="
+						background: rgba(0, 0, 0, 0.5);
+						padding: 2em;
+						text-align: center;
+					">
+				<h1>Crime Statistics</h1>
+				<p></p>
+				<ul class="actions" style="display: inline-block; margin-top: 1.5em">
+					<li>
+						<a href="#header" class="button icon solid solo fa-arrow-down scrolly">Explore</a>
+					</li>
+				</ul>
+			</div>
+		</div>
 
-  <div id="wrapper">
-    <!-- Hero / Intro -->
-    <div id="intro"
-      style="background-image:url('images/philly3.jpg'); background-size:cover; background-position:center;">
-      <div class="overlay" style="background:rgba(0,0,0,0.5); padding:2em; text-align:center;"">
-        <h1>Crime Statistics</h1>
-          <p> </p>
-        <ul class=" actions" style="display:inline-block; margin-top:1.5em;">
-        <li><a href="#header" class="button icon solid solo fa-arrow-down scrolly">Explore</a></li>
-        </ul>
-      </div>
-    </div>
+		<!-- Header -->
+		<header id="header">
+			<a href="index.html" class="logo">Sentinel</a>
+		</header>
 
-    <!-- Header -->
-    <header id="header">
-      <a href="index.html" class="logo">Sentinel</a>
-    </header>    <!-- Nav -->
-    <nav id="nav">
-      <ul class="links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="map.html">Crime Map</a></li>
-        <li><a href="data.html">Statistics</a></li>
-        <li><a href="reports.html">Reports</a></li>
-        <li><a href="about.html">About Us</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        
-        <!-- Auth Links -->
-        <li class="auth-guest"><a href="signup.html" class="nav-btn">Sign Up</a></li>
-        <li class="auth-guest"><a href="login.html" class="nav-btn-outline">Login</a></li>
-        <li class="auth-user" style="display: none;"><a href="profile.html">Profile</a></li>
-        <li class="auth-user" style="display: none;"><a href="#" class="auth-nav-logout nav-btn-outline">Logout</a></li>
-      </ul>
-      <ul class="icons">
-        <li>
-          <a href="https://gitlab.com/yourusername/phillycrimewatch" class="icon brands fa-gitlab">
-            <span class="label">GitLab</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
+		<!-- Nav -->
+		<nav id="nav">
+			<ul class="links">
+				<li><a href="index.html">Home</a></li>
+				<li><a href="map.html">Crime Map</a></li>
+				<li class="active"><a href="data.html">Statistics</a></li>
+				<li><a href="reports.html">Reports</a></li>
+				<li><a href="about.html">About Us</a></li>
+				<li><a href="contact.html">Contact</a></li>
 
-    <!-- Main -->
-    <div id="main">
+				<!-- Auth Links -->
+				<li class="auth-guest"><a href="signup.html" class="nav-btn">Sign Up</a></li>
+				<li class="auth-guest"><a href="login.html" class="nav-btn-outline">Login</a></li>
+				<li class="auth-user" style="display: none;"><a href="profile.html">Profile</a></li>
+				<li class="auth-user" style="display: none;"><a href="#"
+						class="auth-nav-logout nav-btn-outline">Logout</a>
+				</li>
+			</ul>
+			<ul class="icons">
+				<li>
+					<a href="https://gitlab.com/yourusername/phillycrimewatch" class="icon brands fa-gitlab">
+						<span class="label">GitLab</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
 
-      <article class="post featured">
-        <header class="major">
-          <h2>Crime Statistics</h2>
-          <p>Explore trends in Philadelphia crime by type, year, and neighborhood.</p>
-        </header>
-      </article>
+		<!-- Main -->
+		<div id="main">
+			<article class="post featured">
+				<header class="major">
+					<h2>Crime Statistics</h2>
+					<p>
+						Explore trends in Philadelphia crime by type, year, and
+						neighborhood.
+					</p>
+				</header>
+			</article>
 
-      <!-- Chart Grid -->
-      <section class="posts">
-        <article>
-          <header>
-            <h2>Crimes by Type</h2>
-          </header>
-          <canvas id="crimeTypeChart"></canvas>
-        </article>
+			<!-- Chart Grid -->
+			<section class="posts">
+				<article>
+					<header>
+						<h2>Crimes by Type</h2>
+					</header>
+					<!-- Dropdown added here -->
+					<div class="time-filter">
+						<label for="timeRange">Compare: </label>
+						<select id="timeRange">
+							<option value="7">Past Week</option>
+							<option value="30" selected>Past Month</option>
+							<option value="90">Past 3 Months</option>
+							<option value="180">Past 6 Months</option>
+							<option value="365">Past Year</option>
+						</select>
+					</div>
 
-        <article>
-          <header>
-            <h2>Yearly Trends</h2>
-          </header>
-          <canvas id="yearlyTrendChart"></canvas>
-        </article>
+					<canvas id="crimeTypeChart"></canvas>
+				</article>
 
-        <article>
-          <header>
-            <h2>Neighborhood Breakdown</h2>
-          </header>
-          <canvas id="neighborhoodChart"></canvas>
-        </article>
-      </section>
+				<article id="yearly-trends-section">
+					<header>
+						<h2>Yearly Trends</h2>
+					</header>
 
-    </div>
+					<canvas id="yearlyTrendChart"></canvas>
+				</article>
 
-    <!-- Footer -->
-    <footer id="footer">
-      <p>&copy; 2025 Philly Crime Watch | Data from <a href="https://opendataphilly.org/">OpenDataPhilly</a></p>
-    </footer>
+				<article>
+					<header>
+						<h2>Neighborhood Breakdown</h2>
+					</header>
+					<canvas id="neighborhoodChart"></canvas>
+				</article>
+			</section>
+		</div>
 
-  </div>
+		<!-- Footer -->
+		<footer id="footer">
+			<p>
+				&copy; 2025 Philly Crime Watch | Data from
+				<a href="https://opendataphilly.org/">OpenDataPhilly</a>
+			</p>
+		</footer>
+	</div>
 
-  <!-- Scripts -->
-  <script src="assets/js/jquery.min.js"></script>
-  <script src="assets/js/main.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script>
-    async function loadCrimeData() {
-      const response = await fetch('/api/crime');
-      const crimes = await response.json();
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery.scrollex.min.js"></script>
+	<script src="assets/js/jquery.scrolly.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+	<script src="assets/js/data.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="assets/js/nav-auth.js"></script>
 
-      const labels = crimes.map(c => c.text_general_code);
-      const counts = crimes.map(c => c.count);
+	<script>
+		const timeDropdown = document.getElementById('timeRange');
 
-      const ctx = document.getElementById('crimeTypeChart').getContext('2d');
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: labels,
-          datasets: [{
-            label: 'Incidents (last 30 days)',
-            data: counts,
-            backgroundColor: 'rgba(54, 162, 235, 0.7)'
-          }]
-        }
-      });
-    }
+		timeDropdown.addEventListener('change', function () {
+			const selectedValue = this.value;
+			console.log('Selected time range:', selectedValue);
 
-    loadCrimeData();
-  </script>
-  <!-- Scripts -->
-  <script src="assets/js/jquery.min.js"></script>
-  <script src="assets/js/jquery.scrollex.min.js"></script>
-  <script src="assets/js/jquery.scrolly.min.js"></script>
-  <script src="assets/js/browser.min.js"></script>
-  <script src="assets/js/breakpoints.min.js"></script>
-  <script src="assets/js/util.js"></script>
-  <script src="assets/js/main.js"></script>
-  <script src="assets/js/nav-auth.js"></script>
+			// Call your chart update function here
+			// updateCrimeTypeChart(selectedValue);
+		});
+	</script>
 </body>
 
 </html>
+
+<!-- Main -->
+<div id="main">
+	<article class="post featured">
+		<header class="major">
+			<h2>Crime Statistics</h2>
+			<p>
+				Explore trends in Philadelphia crime by type, year, and
+				neighborhood.
+			</p>
+		</header>
+	</article>
+
+	<!-- Chart Grid -->
+	<section class="posts">
+		<article>
+			<header>
+				<h2>Crimes by Type</h2>
+			</header>
+
+			<<<<<<< HEAD <!-- Chart Grid -->
+				<section class="posts">
+					<article>
+						<header>
+							<h2>Crimes by Type</h2>
+						</header>
+						<canvas id="crimeTypeChart"></canvas>
+					</article>
+
+					<article>
+						<header>
+							<h2>Yearly Trends</h2>
+						</header>
+						<canvas id="yearlyTrendChart"></canvas>
+					</article>
+
+					<article>
+						<header>
+							<h2>Neighborhood Breakdown</h2>
+						</header>
+						<canvas id="neighborhoodChart"></canvas>
+					</article>
+				</section>
+				=======
+				<!-- Dropdown added here -->
+				<div class="time-filter">
+					<label for="timeRange">Compare: </label>
+					<select id="timeRange">
+						<option value="7">Past Week</option>
+						<option value="30" selected>Past Month</option>
+						<option value="90">Past 3 Months</option>
+						<option value="180">Past 6 Months</option>
+						<option value="365">Past Year</option>
+					</select>
+				</div>
+
+				<canvas id="crimeTypeChart"></canvas>
+		</article>
+
+		<article id="yearly-trends-section">
+			<header>
+				<h2>Yearly Trends</h2>
+			</header>
+			>>>>>>> origin/main
+
+			<canvas id="yearlyTrendChart"></canvas>
+		</article>
+
+		<article>
+			<header>
+				<h2>Neighborhood Breakdown</h2>
+			</header>
+			<canvas id="neighborhoodChart"></canvas>
+		</article>
+	</section>
+</div>
+
+<!-- Footer -->
+<footer id="footer">
+	<p>
+		&copy; 2025 Philly Crime Watch | Data from
+		<a href="https://opendataphilly.org/">OpenDataPhilly</a>
+	</p>
+</footer>
+</div>
+
+<!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.scrollex.min.js"></script>
+<script src="assets/js/jquery.scrolly.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+	const timeDropdown = document.getElementById('timeRange');
+
+	timeDropdown.addEventListener('change', function () {
+		const selectedValue = this.value;
+		console.log('Selected time range:', selectedValue);
+
+<<<<<<< HEAD
+		loadCrimeData();
+</script>
+<!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.scrollex.min.js"></script>
+<script src="assets/js/jquery.scrolly.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/nav-auth.js"></script>
+</body>
+
+</html>
+=======
+// Call your chart update function here
+// updateCrimeTypeChart(selectedValue);
+});
+</script>
+</body>
+
+</html>
+>>>>>>> origin/main

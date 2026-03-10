@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="eng">
+<html lang="en">
 
 <head>
 	<title>Crime Map | Philly Crime Watch</title>
@@ -17,11 +17,11 @@
 		<!-- Hero / Intro -->
 		<div id="intro"
 			style="background-image:url('images/philly3.jpg'); background-size:cover; background-position:center;">
-			<div class="overlay" style="background:rgba(0,0,0,0.5); padding:2em; text-align:center;"">
-			<h1>Interactive Crime Map</h1>
+			<div class="overlay" style="background:rgba(0,0,0,0.5); padding:2em; text-align:center;">
+				<h1>Interactive Crime Map</h1>
 				<p>Accurate crime data—accessible to anyone, anywhere.</p>
-					<ul class=" actions" style="display:inline-block; margin-top:1.5em;">
-				<li><a href="#header" class="button icon solid solo fa-arrow-down scrolly">Explore</a></li>
+				<ul class=" actions" style="display:inline-block; margin-top:1.5em;">
+					<li><a href="#header" class="button icon solid solo fa-arrow-down scrolly">Explore</a></li>
 				</ul>
 			</div>
 		</div>
@@ -35,7 +35,7 @@
 		<nav id="nav">
 			<ul class="links">
 				<li><a href="index.html">Home</a></li>
-				<li><a href="map.html">Crime Map</a></li>
+				<li class="active"><a href="map.html">Crime Map</a></li>
 				<li><a href="data.html">Statistics</a></li>
 				<li><a href="reports.html">Reports</a></li>
 				<li><a href="about.html">About Us</a></li>
@@ -46,7 +46,8 @@
 				<li class="auth-guest"><a href="login.html" class="nav-btn-outline">Login</a></li>
 				<li class="auth-user" style="display: none;"><a href="profile.html">Profile</a></li>
 				<li class="auth-user" style="display: none;"><a href="#"
-						class="auth-nav-logout nav-btn-outline">Logout</a></li>
+						class="auth-nav-logout nav-btn-outline">Logout</a>
+				</li>
 			</ul>
 			<ul class="icons">
 				<li>
@@ -56,15 +57,32 @@
 				</li>
 			</ul>
 		</nav>
+
 		<!-- Main -->
 		<div id="main">
 			<article class="post featured">
 				<header class="major">
 					<h2>Interactive Crime Map</h2>
-					<p>
-						Zoom in and explore incidents across Philadelphia neighborhoods.
-					</p>
+					<p>Zoom in and explore incidents across Philadelphia neighborhoods.</p>
 				</header>
+
+				<div style="margin-bottom: 20px; text-align: center;">
+					<input type="text" id="zipInput" placeholder="Enter Zip (e.g. 19104)"
+						style="width: 200px; display: inline-block; height: 2.5rem; padding: 0 10px;">
+					<button id="searchBtn" style="height: 2.5rem; padding: 0 15px;">Search</button>
+					<button id="resetBtn" style="height: 2.5rem; padding: 0 15px; background-color: #444;">Reset
+						View</button>
+				</div>
+
+				<select id="crimeFilter">
+					<option value="all">All Crimes</option>
+					<option value="violent">Violent Crimes</option>
+					<option value="non-violent">Non-Violent Crimes</option>
+				</select>
+
+				<button id="pinsbtn">Pins</button>
+				<button id="heatmapbtn">HeatMap</button>
+
 				<div id="map" style="height: 500px"></div>
 			</article>
 		</div>
@@ -80,25 +98,35 @@
 
 	<!-- Scripts -->
 	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/js/main.js"></script>
-	<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-	<script src="assets/js/script.js"></script>
-	<script src="assets/js/jquery.min.js"></script>
 	<script src="assets/js/jquery.scrollex.min.js"></script>
 	<script src="assets/js/jquery.scrolly.min.js"></script>
 	<script src="assets/js/browser.min.js"></script>
 	<script src="assets/js/breakpoints.min.js"></script>
 	<script src="assets/js/util.js"></script>
 	<script src="assets/js/main.js"></script>
+	<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+	<script src="assets/js/script.js"></script>
+	<script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
 	<script src="assets/js/nav-auth.js"></script>
-</body>
-<script>
-	// Basic Leaflet map setup
-	const map = L.map('map').setView([39.9526, -75.1652], 12); // Philly coords
-	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-		attribution: '&copy; OpenStreetMap contributors',
-	}).addTo(map);
-</script>
+	<script>
+		// Basic Leaflet map setup
+		const phillyBounds = L.latLngBounds(
+			[39.87, -75.28], // Southwest
+			[40.14, -74.95] // Northeast
+		);
+
+		const map = L.map('map', {
+			center: [39.9526, -75.1652],
+			zoom: 12,
+			minZoom: 11,
+			maxZoom: 18,
+			maxBounds: phillyBounds,
+			maxBoundsViscosity: 1.0,
+		});
+		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			attribution: '&copy; OpenStreetMap contributors',
+		}).addTo(map);
+	</script>
 </body>
 
 </html>
