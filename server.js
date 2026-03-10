@@ -4,18 +4,19 @@ const bcrypt = require("bcryptjs");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const path = require("path");
+require('dotenv').config();
 
 const app = express();
 
-// Use the same connection string for both mongoose and MongoStore
-const MONGODB_URI = "mongodb+srv://mailemail761_db_user:hNHbde9zVXfSpXZz@cluster0.hhdwin9.mongodb.net/phillycrimewatch?retryWrites=true&w=majority";
+// Use environment variables
+const MONGODB_URI = process.env.MONGODB_URI;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(
   session({
-    secret: "supersecretkey",
+    secret: process.env.SESSION_SECRET || "supersecretkey",
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
