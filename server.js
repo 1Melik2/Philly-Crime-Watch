@@ -45,7 +45,11 @@ const UserSchema = new mongoose.Schema({
   preferences: {
     email_enabled: { type: Boolean, default: true },
     sms_enabled: { type: Boolean, default: false }
-  }
+  },
+  saved_locations: [{
+    name: String,
+    address: String
+  }]
 });
 
 const User = mongoose.model("User", UserSchema);
@@ -174,6 +178,45 @@ app.post("/api/profile", async (req, res) => {
   }
 });
 
+// Add a saved location
+app.post("/api/profile/locations", async (req, res) => {
+  if (!req.session.userId) return res.status(401).json({ error: "Unauthorized" });
+
+  try {
+    const { name, address } = req.body;
+    if (!name || !address) return res.status(400).json({ error: "Name and address required" });
+
+    const user = await User.findByIdAndUpdate(
+      req.session.userId,
+      { $push: { saved_locations: { name, address } } },
+      { new: true }
+    ).select("-password");
+
+    res.json({ message: "Location saved successfully", user });
+  } catch (err) {
+    console.error("Location save error:", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// Delete a saved location
+app.delete("/api/profile/locations/:locationId", async (req, res) => {
+  if (!req.session.userId) return res.status(401).json({ error: "Unauthorized" });
+
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.session.userId,
+      { $pull: { saved_locations: { _id: req.params.locationId } } },
+      { new: true }
+    ).select("-password");
+
+    res.json({ message: "Location deleted successfully", user });
+  } catch (err) {
+    console.error("Location delete error:", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 // Logout route
 app.post("/api/logout", (req, res) => {
   req.session.destroy((err) => {
@@ -208,6 +251,21 @@ app.get("/test-redirect", (req, res) => {
 // Root route - redirect to index.html
 app.get("/", (req, res) => {
   res.redirect("index.html");
+});
+
+// Contact Form Route
+app.post("/api/contact", (req, res) => {
+  const { name, email, message } = req.body;
+
+  if (!name || !email || !message) {
+    return res.status(400).json({ error: "All fields are required" });
+  }
+
+  // In a real application, you would send an email here.
+  // We'll simulate a successful message send.
+  console.log("Contact form filled by:", email, "Message:", message);
+
+  res.json({ message: "Thank you for reaching out! Your message has been sent." });
 });
 
 // Explicit routes for HTML files
@@ -246,6 +304,26 @@ app.get("/profile.html", (req, res, next) => {
   res.sendFile(filePath, (err) => {
     if (err) {
       console.error("Error sending profile.html:", err);
+      next(err);
+    }
+  });
+});
+
+app.get("/contact.html", (req, res, next) => {
+  const filePath = path.join(__dirname, "HTML", "contact.html");
+  res.sendFile(filePath, (err) => {
+    if (err) {
+      console.error("Error sending contact.html:", err);
+      next(err);
+    }
+  });
+});
+
+app.get("/reports.html", (req, res, next) => {
+  const filePath = path.join(__dirname, "HTML", "reports.html");
+  res.sendFile(filePath, (err) => {
+    if (err) {
+      console.error("Error sending reports.html:", err);
       next(err);
     }
   });

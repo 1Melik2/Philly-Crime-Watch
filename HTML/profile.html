@@ -92,9 +92,67 @@
             color: #dc3545;
         }
 
-        .logout-btn-container {
-            text-align: right;
-            margin-bottom: 20px;
+        .widget {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border-top: 2px solid #18bfef;
+        }
+
+        .widget h3 {
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .location-item {
+            background: rgba(255, 255, 255, 0.03);
+            margin-bottom: 0.5rem;
+            padding: 0.75rem;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .location-info strong {
+            display: block;
+            color: #18bfef;
+        }
+
+        .location-info span {
+            font-size: 0.85rem;
+            color: #ccc;
+        }
+
+        .btn-delete {
+            color: #ff5b5b;
+            cursor: pointer;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            font-weight: 900;
+        }
+
+        .alert-item {
+            font-size: 0.9rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .alert-item:last-child {
+            border-bottom: none;
+        }
+
+        .alert-type {
+            font-weight: 900;
+            color: #fff;
+        }
+
+        .alert-loc {
+            color: #888;
+            font-size: 0.8rem;
         }
     </style>
 </head>
@@ -106,87 +164,126 @@
         <!-- Header -->
         <header id="header">
             <a href="index.html" class="logo">Sentinel</a>
-        </header>    <!-- Nav -->
-    <nav id="nav">
-      <ul class="links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="map.html">Crime Map</a></li>
-        <li><a href="data.html">Statistics</a></li>
-        <li><a href="reports.html">Reports</a></li>
-        <li><a href="about.html">About Us</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        
-        <!-- Auth Links -->
-        <li class="auth-guest"><a href="signup.html" class="nav-btn">Sign Up</a></li>
-        <li class="auth-guest"><a href="login.html" class="nav-btn-outline">Login</a></li>
-        <li class="auth-user" style="display: none;"><a href="profile.html">Profile</a></li>
-        <li class="auth-user" style="display: none;"><a href="#" class="auth-nav-logout nav-btn-outline">Logout</a></li>
-      </ul>
-      <ul class="icons">
-        <li>
-          <a href="https://gitlab.com/yourusername/phillycrimewatch" class="icon brands fa-gitlab">
-            <span class="label">GitLab</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
+        </header> <!-- Nav -->
+        <nav id="nav">
+            <ul class="links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="map.html">Crime Map</a></li>
+                <li><a href="data.html">Statistics</a></li>
+                <li><a href="reports.html">Reports</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact</a></li>
+
+                <!-- Auth Links -->
+                <li class="auth-guest"><a href="signup.html" class="nav-btn">Sign Up</a></li>
+                <li class="auth-guest"><a href="login.html" class="nav-btn-outline">Login</a></li>
+                <li class="auth-user" style="display: none;"><a href="profile.html">Profile</a></li>
+                <li class="auth-user" style="display: none;"><a href="#"
+                        class="auth-nav-logout nav-btn-outline">Logout</a></li>
+            </ul>
+            <ul class="icons">
+                <li>
+                    <a href="https://gitlab.com/yourusername/phillycrimewatch" class="icon brands fa-gitlab">
+                        <span class="label">GitLab</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
 
         <!-- Main -->
         <div id="main">
             <section class="post">
 
                 <header class="major">
-                    <h1>Your Profile</h1>
-                    <p>Manage your account settings and alert preferences</p>
+                    <h1>Your Dashboard</h1>
+                    <p>Manage your account settings, saved locations, and alerts</p>
                     <div class="logout-btn-container">
                         <button id="logout-btn" class="button small">Logout</button>
                     </div>
                 </header>
 
-                <form id="profile-form">
-                    <h3>Contact Information</h3>
-                    <div class="fields">
-                        <div class="field half">
-                            <label>Name (Uneditable)</label>
-                            <input type="text" id="name" name="name" disabled />
-                        </div>
-                        <div class="field half">
-                            <label>Email Address</label>
-                            <input type="email" id="email" name="email" required />
-                        </div>
-                        <div class="field">
-                            <label>Phone Number (Include Country Code, e.g. +1...)</label>
-                            <input type="tel" id="phone" name="phone" placeholder="+16104158141" />
-                        </div>
+                <div class="row">
+                    <div class="col-6 col-12-small">
+                        <form id="profile-form">
+                            <h3>Account Settings</h3>
+                            <div class="fields">
+                                <div class="field">
+                                    <label>Name</label>
+                                    <input type="text" id="name" name="name" disabled />
+                                </div>
+                                <div class="field">
+                                    <label>Email</label>
+                                    <input type="email" id="email" name="email" required />
+                                </div>
+                                <div class="field">
+                                    <label>Phone</label>
+                                    <input type="tel" id="phone" name="phone" />
+                                </div>
+                            </div>
+
+                            <hr />
+
+                            <h3>Preferences</h3>
+                            <div class="preference-row">
+                                <label>Email Alerts</label>
+                                <label class="switch">
+                                    <input type="checkbox" id="email_enabled" name="email_enabled">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="preference-row">
+                                <label>SMS Alerts</label>
+                                <label class="switch">
+                                    <input type="checkbox" id="sms_enabled" name="sms_enabled">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+
+                            <div id="message-box"></div>
+
+                            <ul class="actions" style="margin-top: 2em;">
+                                <li><button type="submit" class="button primary small" id="save-btn">Save
+                                        Settings</button></li>
+                            </ul>
+                        </form>
                     </div>
 
-                    <hr />
+                    <div class="col-6 col-12-small">
+                        <!-- Saved Locations Widget -->
+                        <div class="widget">
+                            <h3>My Saved Locations</h3>
+                            <div id="locations-list">
+                                <!-- Locations will be loaded here -->
+                            </div>
+                            <hr />
+                            <form id="location-form">
+                                <div class="fields">
+                                    <div class="field half">
+                                        <input type="text" id="loc-name" placeholder="Name (e.g. Home)" required />
+                                    </div>
+                                    <div class="field half">
+                                        <input type="text" id="loc-addr" placeholder="Address" required />
+                                    </div>
+                                </div>
+                                <ul class="actions">
+                                    <li><button type="submit" class="button small">Add Location</button></li>
+                                </ul>
+                            </form>
+                        </div>
 
-                    <h3>Notification Preferences</h3>
-                    <p>Choose how you want to receive crime alerts:</p>
-
-                    <div class="preference-row">
-                        <label style="margin-bottom: 0;">Receive Email Alerts</label>
-                        <label class="switch">
-                            <input type="checkbox" id="email_enabled" name="email_enabled">
-                            <span class="slider"></span>
-                        </label>
+                        <!-- Recent Alerts Widget -->
+                        <div class="widget">
+                            <h3>Recent Community Alerts</h3>
+                            <div id="alerts-list">
+                                <p style="font-style:italic; font-size:0.8rem;">Loading latest alerts...</p>
+                            </div>
+                            <ul class="actions" style="margin-top:1rem;">
+                                <li><a href="reports.html" class="button small">View All Reports</a></li>
+                            </ul>
+                        </div>
                     </div>
-
-                    <div class="preference-row">
-                        <label style="margin-bottom: 0;">Receive SMS Alerts</label>
-                        <label class="switch">
-                            <input type="checkbox" id="sms_enabled" name="sms_enabled">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-
-                    <div id="message-box"></div>
-
-                    <ul class="actions special" style="margin-top: 2em;">
-                        <li><button type="submit" class="button primary" id="save-btn">Save Changes</button></li>
-                    </ul>
-                </form>
+                </div>
             </section>
         </div>
 
@@ -211,39 +308,94 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", async () => {
-            // 1. Fetch User Data
-            try {
-                const response = await fetch('/api/profile');
-                if (response.status === 401) {
-                    // If not logged in, redirect to login
-                    window.location.href = '/login.html';
-                    return;
-                }
-
-                const user = await response.json();
-
-                // Populate the form fields
-                document.getElementById('name').value = user.name || '';
-                document.getElementById('email').value = user.email || '';
-                document.getElementById('phone').value = user.phone || '';
-
-                if (user.preferences) {
-                    document.getElementById('email_enabled').checked = user.preferences.email_enabled;
-                    document.getElementById('sms_enabled').checked = user.preferences.sms_enabled;
-                } else {
-                    // Defaults for old accounts
-                    document.getElementById('email_enabled').checked = true;
-                    document.getElementById('sms_enabled').checked = false;
-                }
-            } catch (err) {
-                console.error("Error fetching profile:", err);
-            }
-
-            // 2. Handle Form Submission
             const form = document.getElementById('profile-form');
             const msgBox = document.getElementById('message-box');
             const saveBtn = document.getElementById('save-btn');
+            const locationsList = document.getElementById('locations-list');
+            const alertsList = document.getElementById('alerts-list');
 
+            // 1. Initial Load
+            async function initDashboard() {
+                try {
+                    const response = await fetch('/api/profile');
+                    if (response.status === 401) {
+                        window.location.href = '/login.html';
+                        return;
+                    }
+
+                    const user = await response.json();
+
+                    // Populate Profile Form
+                    document.getElementById('name').value = user.name || '';
+                    document.getElementById('email').value = user.email || '';
+                    document.getElementById('phone').value = user.phone || '';
+
+                    if (user.preferences) {
+                        document.getElementById('email_enabled').checked = user.preferences.email_enabled;
+                        document.getElementById('sms_enabled').checked = user.preferences.sms_enabled;
+                    }
+
+                    // Render Locations
+                    renderLocations(user.saved_locations || []);
+
+                    // Fetch Alerts
+                    fetchAlerts();
+
+                } catch (err) {
+                    console.error("Error initializing dashboard:", err);
+                }
+            }
+
+            // 2. Render Locations
+            function renderLocations(locations) {
+                locationsList.innerHTML = '';
+                if (locations.length === 0) {
+                    locationsList.innerHTML = '<p style="font-size:0.8rem; color:#888;">No saved locations yet.</p>';
+                    return;
+                }
+
+                locations.forEach(loc => {
+                    const div = document.createElement('div');
+                    div.className = 'location-item';
+                    div.innerHTML = `
+                        <div class="location-info">
+                            <strong>${loc.name}</strong>
+                            <span>${loc.address}</span>
+                        </div>
+                        <span class="btn-delete" data-id="${loc._id}">Delete</span>
+                    `;
+                    locationsList.appendChild(div);
+                });
+            }
+
+            // 3. Fetch Recent Philly Alerts
+            async function fetchAlerts() {
+                try {
+                    const sql = encodeURIComponent("SELECT text_general_code, location_block FROM incidents_part1_part2 ORDER BY dispatch_date DESC LIMIT 5");
+                    const response = await fetch(`https://phl.carto.com/api/v2/sql?q=${sql}`);
+                    const data = await response.json();
+
+                    alertsList.innerHTML = '';
+                    if (data.rows.length === 0) {
+                        alertsList.innerHTML = '<p>No recent alerts.</p>';
+                        return;
+                    }
+
+                    data.rows.forEach(alert => {
+                        const div = document.createElement('div');
+                        div.className = 'alert-item';
+                        div.innerHTML = `
+                            <div class="alert-type">${alert.text_general_code}</div>
+                            <div class="alert-loc">${alert.location_block}</div>
+                        `;
+                        alertsList.appendChild(div);
+                    });
+                } catch (err) {
+                    alertsList.innerHTML = '<p>Failed to load alerts.</p>';
+                }
+            }
+
+            // 4. Update Profile Settings
             form.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 saveBtn.disabled = true;
@@ -262,53 +414,70 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
                     });
-
                     const result = await response.json();
-
                     msgBox.style.display = 'block';
-                    if (response.ok) {
-                        msgBox.className = 'msg-success';
-                        msgBox.innerText = result.message || "Profile updated successfully!";
-                    } else {
-                        msgBox.className = 'msg-error';
-                        msgBox.innerText = result.error || "Failed to update profile.";
-                    }
-
+                    msgBox.className = response.ok ? 'msg-success' : 'msg-error';
+                    msgBox.innerText = result.message || result.error;
                 } catch (err) {
                     msgBox.style.display = 'block';
                     msgBox.className = 'msg-error';
-                    msgBox.innerText = "Network error. Please try again.";
+                    msgBox.innerText = "Network error.";
                 } finally {
                     saveBtn.disabled = false;
-                    saveBtn.innerText = "Save Changes";
-
-                    // Hide message after 5 seconds
-                    setTimeout(() => {
-                        msgBox.style.display = 'none';
-                    }, 5000);
+                    saveBtn.innerText = "Save Settings";
+                    setTimeout(() => msgBox.style.display = 'none', 3000);
                 }
             });
 
-            // 3. Handle Logout
-            const logoutBtn = document.getElementById('logout-btn');
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', async () => {
+            // 5. Add Location
+            document.getElementById('location-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const name = document.getElementById('loc-name').value;
+                const address = document.getElementById('loc-addr').value;
+
+                try {
+                    const response = await fetch('/api/profile/locations', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name, address })
+                    });
+                    if (response.ok) {
+                        const result = await response.json();
+                        renderLocations(result.user.saved_locations);
+                        document.getElementById('location-form').reset();
+                    }
+                } catch (err) {
+                    console.error("Error adding location:", err);
+                }
+            });
+
+            // 6. Delete Location
+            locationsList.addEventListener('click', async (e) => {
+                if (e.target.classList.contains('btn-delete')) {
+                    const id = e.target.getAttribute('data-id');
                     try {
-                        const response = await fetch('/api/logout', { method: 'POST' });
+                        const response = await fetch(`/api/profile/locations/${id}`, { method: 'DELETE' });
                         if (response.ok) {
-                            window.location.href = '/login.html';
-                        } else {
-                            alert("Failed to log out. Please try again.");
+                            const result = await response.json();
+                            renderLocations(result.user.saved_locations);
                         }
                     } catch (err) {
-                        console.error('Logout error:', err);
-                        alert("Network error while logging out.");
+                        console.error("Error deleting location:", err);
                     }
-                });
-            }
+                }
+            });
+
+            // 7. Logout
+            document.getElementById('logout-btn').addEventListener('click', async () => {
+                const response = await fetch('/api/logout', { method: 'POST' });
+                if (response.ok) window.location.href = '/login.html';
+            });
+
+            // Kick off
+            initDashboard();
         });
     </script>
-  <script src="assets/js/nav-auth.js"></script>
+    <script src="assets/js/nav-auth.js"></script>
 </body>
 
 </html>
