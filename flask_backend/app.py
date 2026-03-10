@@ -2,16 +2,23 @@ from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
 import requests
 import asyncio
+import os
+from dotenv import load_dotenv
 from notificationapi_python_server_sdk import notificationapi
 from model import monthly_linear_regression
 
-app = Flask(__name__)
+load_dotenv()
+
+app = Flask(__name__, 
+            template_folder='../HTML', 
+            static_folder='../HTML', 
+            static_url_path='')
 CORS(app)
 
 # Initialize NotificationAPI
 notificationapi.init(
-    "m6sulpvh8jxw1f80wgyxa6cp1r", 
-    "55cfjj8p3owjpostwxqqa29jgqqyhh9s1dj62683692hiwyl5xztmws3xa"
+    os.getenv("NOTIFICATIONAPI_CLIENT_ID"), 
+    os.getenv("NOTIFICATIONAPI_CLIENT_SECRET")
 )
 
 @app.route("/")

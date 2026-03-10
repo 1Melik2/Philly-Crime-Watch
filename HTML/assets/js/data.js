@@ -41,7 +41,7 @@ async function fetchCrimeComparison(
 ) {
 	try {
 		let url =
-			`http://127.0.0.1:5000/api/crime_compare?` +
+			`http://127.0.0.1:5001/api/crime_compare?` +
 			`current_start=${currentStart}&` +
 			`current_end=${currentEnd}&` +
 			`previous_start=${previousStart}&` +
@@ -149,6 +149,53 @@ function renderYearlyTrendChart(labels, values) {
 }
 
 // Main loader
+function renderCrimeChart(data, daysLabel) {
+	if (!data || !data.data) return;
+
+	const sorted = data.data.sort((a, b) => b.current_count - a.current_count);
+
+	const topFive = sorted.slice(0, 5);
+
+	const labels = topFive.map((row) => row.crime_type);
+	const currentCounts = topFive.map((row) => row.current_count);
+	const previousCounts = topFive.map((row) => row.previous_count);
+
+	const canvas = document.getElementById('crimeTypeChart');
+	if (!canvas) return;
+
+	const ctx = canvas.getContext('2d');
+
+	if (crimeChartInstance) {
+		crimeChartInstance.destroy();
+	}
+
+	crimeChartInstance = new Chart(ctx, {
+		type: 'bar',
+		data: {
+			labels: labels,
+			datasets: [
+				{
+					label: `Last ${daysLabel}`,
+					data: currentCounts,
+				},
+				{
+					label: `Previous ${daysLabel}`,
+					data: previousCounts,
+				},
+			],
+		},
+		options: {
+			responsive: true,
+			scales: {
+				y: {
+					beginAtZero: true,
+				},
+			},
+		},
+	});
+}
+
+// Main loader
 async function loadComparison(days = 30, psa = null) {
 	const ranges = calculateDateRanges(days);
 	//wont load chart
@@ -159,12 +206,14 @@ async function loadComparison(days = 30, psa = null) {
 		ranges.previousEnd,
 		psa
 	);
+
+	renderCrimeChart(data, `${days} Days`);
 }
 
 async function fetchMonthlyForecast(crimeType) {
 	try {
 		const response = await fetch(
-			`http://127.0.0.1:5000/api/monthly_forecast?crime_type=${crimeType}`
+			`http://127.0.0.1:5001/api/monthly_forecast?crime_type=${crimeType}`
 		);
 
 		if (!response.ok) {
