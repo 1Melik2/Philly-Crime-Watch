@@ -1,4 +1,4 @@
-/* Basic Reset and Body */
+﻿/* Basic Reset and Body */
 body {
     font-family: Arial, sans-serif;
     background: #f5f5f5;
@@ -266,7 +266,7 @@ a[class*="export"],
 }
 
 .vizwit-container table thead th:after {
-    content: "⇅";
+    content: "Γçà";
     position: absolute;
     right: 8px;
     opacity: 0.3;
@@ -278,12 +278,12 @@ a[class*="export"],
 }
 
 .vizwit-container table thead th.sorting_asc:after {
-    content: "↑";
+    content: "Γåæ";
     opacity: 1;
 }
 
 .vizwit-container table thead th.sorting_desc:after {
-    content: "↓";
+    content: "Γåô";
     opacity: 1;
 }
 

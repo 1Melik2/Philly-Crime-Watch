@@ -52,7 +52,7 @@ def send_notification_route():
             "error": str(e)
         }), 500
 
-# --- Crime Statistics API (from main) ---
+# --- Crime Statistics API ---
 
 @app.route('/api/crime')
 def crime_data():
@@ -68,9 +68,111 @@ def crime_data():
     )
     response = requests.get(url)
     if response.status_code != 200:
-        return jsonify({'error': 'Failed to fetch data'}), 500
+        return jsonify({'error': 'Failed to fetch data', 'details': response.text}), 500
     data = response.json()
     return jsonify(data.get('rows', []))
+
+@app.route('/api/crime_by_hour')
+def crime_by_hour():
+    days = request.args.get('days', default=30, type=int)
+    query = (
+        f"SELECT "
+        f"EXTRACT(HOUR FROM dispatch_date_time) as hour, "
+        f"COUNT(*) as count "
+        f"FROM incidents_part1_part2 "
+        f"WHERE dispatch_date_time >= NOW() - INTERVAL '{days} days' "
+        f"AND dispatch_date_time IS NOT NULL "
+        f"GROUP BY EXTRACT(HOUR FROM dispatch_date_time) "
+        f"ORDER BY hour"
+    )
+    try:
+        response = requests.get("https://phl.carto.com/api/v2/sql", params={'q': query})
+        if response.status_code != 200:
+            return jsonify({'error': 'Carto API error', 'details': response.text}), 500
+        data = response.json()
+        return jsonify(data.get('rows', []))
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/crime_by_day')
+def crime_by_day():
+    days = request.args.get('days', default=30, type=int)
+    # DOW: 0=Sun, 1=Mon, ..., 6=Sat
+    query = (
+        f"SELECT "
+        f"EXTRACT(DOW FROM dispatch_date_time) as day, "
+        f"COUNT(*) as count "
+        f"FROM incidents_part1_part2 "
+        f"WHERE dispatch_date_time >= NOW() - INTERVAL '{days} days' "
+        f"AND dispatch_date_time IS NOT NULL "
+        f"GROUP BY EXTRACT(DOW FROM dispatch_date_time) "
+        f"ORDER BY day"
+    )
+    try:
+        response = requests.get("https://phl.carto.com/api/v2/sql", params={'q': query})
+        if response.status_code != 200:
+            return jsonify({'error': 'Carto API error', 'details': response.text}), 500
+        data = response.json()
+        return jsonify(data.get('rows', []))
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/crime_violent_ratio')
+def crime_violent_ratio():
+    days = request.args.get('days', default=30, type=int)
+    violent_types = [
+        'Robbery Firearm', 'Robbery No Firearm', 'Rape',
+        'Aggravated Assault Firearm', 'Aggravated Assault No Firearm',
+        'Other Assaults', 'Homicide - Criminal', 'Homicide - Gross Negligence',
+        'Homicide - Justifiable'
+    ]
+    violent_list = ", ".join(f"'{v}'" for v in violent_types)
+    query = (
+        f"SELECT "
+        f"SUM(CASE WHEN text_general_code IN ({violent_list}) THEN 1 ELSE 0 END) as violent, "
+        f"SUM(CASE WHEN text_general_code NOT IN ({violent_list}) THEN 1 ELSE 0 END) as non_violent "
+        f"FROM incidents_part1_part2 "
+        f"WHERE dispatch_date_time >= NOW() - INTERVAL '{days} days' "
+        f"AND dispatch_date_time IS NOT NULL"
+    )
+    try:
+        response = requests.get("https://phl.carto.com/api/v2/sql", params={'q': query})
+        if response.status_code != 200:
+            return jsonify({'error': 'Carto API error', 'details': response.text}), 500
+        data = response.json()
+        rows = data.get('rows', [])
+        return jsonify(rows[0] if rows else {'violent': 0, 'non_violent': 0})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/crime_prediction')
+def crime_prediction():
+    try:
+        query = (
+            "SELECT "
+            "  DATE_TRUNC('week', dispatch_date_time)::date as week_start, "
+            "  COUNT(*) as count "
+            "FROM incidents_part1_part2 "
+            "WHERE dispatch_date_time >= NOW() - INTERVAL '56 days' "
+            "AND dispatch_date_time IS NOT NULL "
+            "GROUP BY DATE_TRUNC('week', dispatch_date_time) "
+            "ORDER BY week_start"
+        )
+        response = requests.get("https://phl.carto.com/api/v2/sql", params={'q': query})
+        if response.status_code != 200:
+            return jsonify({'error': 'Carto API error', 'details': response.text}), 500
+        data = response.json()
+        rows = data.get('rows', [])
+        weeks = [r['week_start'] for r in rows]
+        counts = [r['count'] for r in rows]
+        if len(counts) >= 2:
+            avg_change = sum(counts[i] - counts[i-1] for i in range(1, len(counts))) / (len(counts) - 1)
+            predicted = max(0, int(counts[-1] + avg_change))
+        else:
+            predicted = counts[-1] if counts else 0
+        return jsonify({'weeks': weeks, 'counts': counts, 'predicted': predicted})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/api/crime_locations')
 def crime_locations():
@@ -88,7 +190,7 @@ def crime_locations():
     )
     response = requests.get(url)
     if response.status_code != 200:
-        return jsonify({"error": "Failed to fetch data"}), 500
+        return jsonify({"error": "Failed to fetch data", 'details': response.text}), 500
     data = response.json()
     return jsonify(data.get("rows", []))
 
@@ -105,15 +207,15 @@ def latest_crime():
     )
     response = requests.get(url)
     if response.status_code != 200:
-        return jsonify({'error': 'Failed to fetch latest crime'}), 500
+        return jsonify({'error': 'Failed to fetch latest crime', 'details': response.text}), 500
     data = response.json()
     rows = data.get('rows', [])
     if rows:
         crime = rows[0]
         return jsonify({
-            "type": crime.get("text_general_code", "Unknown"),
-            "time": crime.get("dispatch_date_time", "Unknown"),
-            "block": crime.get("location_block", "Unknown")
+            "type": crime.get("type", crime.get("text_general_code", "Unknown")),
+            "time": crime.get("time", crime.get("dispatch_date_time", "Unknown")),
+            "block": crime.get("block", crime.get("location_block", "Unknown"))
         })
     else:
         return jsonify({'error': 'No data found'}), 404
@@ -136,7 +238,7 @@ def neighborhood_data():
     )
     response = requests.get(url)
     if response.status_code != 200:
-        return jsonify({'error': 'Failed to fetch neighborhood data'}), 500
+        return jsonify({'error': 'Failed to fetch neighborhood data', 'details': response.text}), 500
     data = response.json()
     rows = data.get('rows', [])
     return jsonify({
@@ -168,7 +270,7 @@ def crime_compare():
     )
     response = requests.get(url)
     if response.status_code != 200:
-        return jsonify({'error': 'Failed to fetch data'}), 500
+        return jsonify({'error': 'Failed to fetch data', 'details': response.text}), 500
     data = response.json()
     rows = data.get('rows', [])
     return jsonify({
@@ -190,7 +292,7 @@ def monthly_forecast():
     )
     response = requests.get(url)
     if response.status_code != 200:
-        return jsonify({"error": "Failed to fetch data"}), 500
+        return jsonify({"error": "Failed to fetch data", 'details': response.text}), 500
     data = response.json()
     rows = data.get("rows", [])
     result = monthly_linear_regression(rows)

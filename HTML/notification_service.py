@@ -9,7 +9,7 @@ import json
 
 load_dotenv()
 
-# Use credentials from .env file
+# Use credentials from .env file    
 notificationapi.init(
   os.getenv("NOTIFICATIONAPI_CLIENT_ID"), 
   os.getenv("NOTIFICATIONAPI_CLIENT_SECRET")

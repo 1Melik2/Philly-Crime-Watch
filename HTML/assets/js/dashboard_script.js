@@ -1,7 +1,7 @@
-let crimeChart = null;
+﻿let crimeChart = null;
 
 async function loadCrimeData(days = 1) {
-	const response = await fetch(`/api/crime?days=${days}`);
+	const response = await fetch(`http://localhost:5001/api/crime?days=${days}`);
 	const data = await response.json();
 
 	// Show data in a list - temp
@@ -9,7 +9,7 @@ async function loadCrimeData(days = 1) {
 	list.innerHTML = '';
 	data.forEach((crime) => {
 		const item = document.createElement('li');
-		item.textContent = `${crime.text_general_code} — ${crime.count} incidents`;
+		item.textContent = `${crime.text_general_code} ΓÇö ${crime.count} incidents`;
 		list.appendChild(item);
 	});
 
