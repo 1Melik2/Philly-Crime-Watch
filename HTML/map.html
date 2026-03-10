@@ -33,26 +33,30 @@
 
 			<!-- Main -->
 			<div id="main">
-				<article class="post featured">
-					<header class="major">
-						<h2>Interactive Crime Map</h2>
-						<p>
-							Zoom in and explore incidents across Philadelphia neighborhoods.
-						</p>
-					</header>
+    <article class="post featured">
+        <header class="major">
+            <h2>Interactive Crime Map</h2>
+            <p>Zoom in and explore incidents across Philadelphia neighborhoods.</p>
+        </header>
 
-                    <select id="crimeFilter">
-	                    <option value="all">All Crimes</option>
-	                    <option value="violent">Violent Crimes</option>
-	                    <option value="non-violent">Non-Violent Crimes</option>
-                    </select>
+        <div style="margin-bottom: 20px; text-align: center;">
+            <input type="text" id="zipInput" placeholder="Enter Zip (e.g. 19104)" style="width: 200px; display: inline-block; height: 2.5rem; padding: 0 10px;">
+            <button id="searchBtn" style="height: 2.5rem; padding: 0 15px;">Search</button>
+            <button id="resetBtn" style="height: 2.5rem; padding: 0 15px; background-color: #444;">Reset View</button>
+        </div>
 
-					<button id="pinsbtn">Pins</button>
-					<button id="heatmapbtn">HeatMap</button>
+        <select id="crimeFilter">
+            <option value="all">All Crimes</option>
+            <option value="violent">Violent Crimes</option>
+            <option value="non-violent">Non-Violent Crimes</option>
+        </select>
 
-					<div id="map" style="height: 500px"></div>
-				</article>
-			</div>
+        <button id="pinsbtn">Pins</button>
+        <button id="heatmapbtn">HeatMap</button>
+
+        <div id="map" style="height: 500px"></div>
+    </article>
+</div>
 
 			<!-- Footer -->
 			<footer id="footer">
